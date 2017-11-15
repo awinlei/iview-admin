@@ -3,6 +3,10 @@ import iView from 'iview';
 import VueRouter from 'vue-router';
 import {routers, otherRouter, appRouter} from './router';
 import Vuex from 'vuex';
+
+// 引入 axios
+import axios from 'axios';
+
 import Util from './libs/util';
 import App from './app.vue';
 import Cookies from 'js-cookie';
@@ -113,7 +117,14 @@ const store = new Vuex.Store({
         cachePage: [],
         lang: '',
         isFullScreen: false,
-        dontCache: ['text-editor']  // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+        dontCache: ['text-editor'],  // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
+        // 定义两个状态
+        test01: {
+          name: 'Wise Wrong'
+         },
+        test02: {
+          tell: '12312345678'
+        }
     },
     getters: {
 
@@ -225,6 +236,7 @@ const store = new Vuex.Store({
             Cookies.set('locking', '0');
         },
         setMenuList (state, menulist) {
+            console.log(menulist);
             state.menuList = menulist;
         },
         updateMenulist (state) {
@@ -309,7 +321,20 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-
+        // 封装一个 ajax 方法
+        saveForm (context) {
+         console.log('调用成功');
+         console.log(context);
+          axios({
+              method: 'post',
+              url: 'http://ci.youzu.com/api.php',
+              data: context.state.test02
+          }).then(function(res){
+             console.log(res)
+          }).catch(function(err){
+             console.log(err)
+          })
+         }
     }
 });
 
@@ -350,5 +375,6 @@ new Vue({
             }
         });
         this.$store.commit('setTagsList', tagsList);
+        this.$store.dispatch('saveForm',{cmd:getserver,amount:10});
     }
 });

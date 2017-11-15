@@ -231,6 +231,7 @@
         },
         mounted () {
             this.init();
+            console.log(this);
             // 锁屏相关
             let lockScreenBack = document.getElementById('lock_screen_back');
             let x = document.body.clientWidth;

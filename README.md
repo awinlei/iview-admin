@@ -9,7 +9,7 @@
 [![vue](https://img.shields.io/badge/vue-2.5.2-brightgreen.svg?style=flat-square)](https://github.com/vuejs/vue)
 [![iview ui](https://img.shields.io/badge/iview-2.5.0-brightgreen.svg?style=flat-square)](https://github.com/iview/iview)
 
-## 当前版本：v1.1.4
+## 当前版本：v1.1.5
 [更新日志](https://github.com/iview/iview-admin/releases)
 
 [使用教程](https://github.com/iview/iview-admin/wiki)
@@ -18,10 +18,26 @@
 
 `注：在线版本会在开发版本新小版本发布后更新到相应版本，所以如果想体验最新版本iview-admin，请clone完整项目代码到本地运行。`
 
-## Run
+**v1.2.0预告**
 
+在不断充实v1.1.x版本的同时，iview-admin在进行大规模的整理，在接下来的v1.2.0版本中，将有如下变化：
+- 整理文件目录，对高耦合的部分进行拆分。
+- 优化完善开发和生产环境的配置。
+- 简化主体架构，组件随意拆装。
+
+## Install
+```bush
+// install dependencies
+npm install
 ```
+## Run
+### Development
+```bush
 npm run dev
+```
+### Production(Build)
+```bush
+npm run build
 ```
 
 ## 简介
