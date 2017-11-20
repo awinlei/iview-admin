@@ -4,9 +4,6 @@ import VueRouter from 'vue-router';
 import {routers, otherRouter, appRouter} from './router';
 import Vuex from 'vuex';
 
-// 引入 axios
-import axios from 'axios';
-
 import Util from './libs/util';
 import App from './app.vue';
 import Cookies from 'js-cookie';
@@ -325,15 +322,28 @@ const store = new Vuex.Store({
         saveForm (context) {
          console.log('调用成功');
          console.log(context);
-          axios({
-              method: 'post',
-              url: 'http://ci.youzu.com/api.php',
-              data: context.state.test02
-          }).then(function(res){
-             console.log(res)
-          }).catch(function(err){
-             console.log(err)
-          })
+
+            Util.ajax.post('/api', {
+                firstName: 'Fred',
+                lastName: 'Flintstone'
+                })
+                .then(function (response) {
+                    console.log('start');
+                    console.log(response.data);
+                    console.log('end');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        //   axios({
+        //       method: 'post',
+        //       url: 'http://ci.youzu.com/api',
+        //       data: context.state.test02
+        //   }).then(function(res){
+        //      console.log(res)
+        //   }).catch(function(err){
+        //      console.log(err)
+        //   })
          }
     }
 });
@@ -375,6 +385,6 @@ new Vue({
             }
         });
         this.$store.commit('setTagsList', tagsList);
-        this.$store.dispatch('saveForm',{cmd:getserver,amount:10});
+        this.$store.dispatch('saveForm',{cmd:'getserver',amount:10});
     }
 });

@@ -66,6 +66,277 @@ export const otherRouter = {
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
     {
+        path: '/sumary',
+        icon: 'stats-bars',
+        name: 'sumary',
+        title: '概览',
+        component: Main,
+        children: [
+            { path: 'index', title: '游戏概览', name: 'sumary_index', component: resolve => { require(['./views/sumary/sumary.vue'], resolve); } }
+        ]
+    },
+    {
+        path: '/player',
+        icon: 'person',
+        name: 'player',
+        title: '玩家分析',
+        component: Main,
+        children: [
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '新增玩家',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'md-editor',
+                icon: 'ios-people',
+                name: 'md-editor',
+                title: '活跃玩家',
+                component: resolve => { require(['./views/my_components/markdown-editor/markdown-editor.vue'], resolve); }
+            },
+            {
+                path: 'image-editor',
+                icon: 'crop',
+                name: 'image-editor',
+                title: '付费转化',
+                component: resolve => { require(['./views/my_components/image-editor/image-editor.vue'], resolve); }
+            },
+            {
+                path: 'draggable-list',
+                icon: 'arrow-move',
+                name: 'draggable-list',
+                title: '玩家流失',
+                component: resolve => { require(['./views/my_components/draggable-list/draggable-list.vue'], resolve); }
+            },
+            {
+                path: 'area-linkage',
+                icon: 'ios-camera',
+                name: 'area-linkage',
+                title: '游戏习惯',
+                component: resolve => { require(['./views/my_components/area-linkage/area-linkage.vue'], resolve); }
+            },
+            {
+                path: 'file-upload',
+                icon: 'ios-game-controller-b',
+                name: 'file-upload',
+                title: '设备相关',
+                component: resolve => { require(['./views/my_components/file-upload/file-upload.vue'], resolve); }
+            }
+        ]
+    },
+    {
+        path: '/cash',
+        icon: 'person',
+        name: 'cash',
+        title: '收入分析',
+        component: Main,
+        children: [
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '收入数据',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'md-editor',
+                icon: 'ios-people',
+                name: 'md-editor',
+                title: '付费渗透',
+                component: resolve => { require(['./views/my_components/markdown-editor/markdown-editor.vue'], resolve); }
+            },
+            {
+                path: 'image-editor',
+                icon: 'crop',
+                name: 'image-editor',
+                title: '新玩家价值',
+                component: resolve => { require(['./views/my_components/image-editor/image-editor.vue'], resolve); }
+            },
+            {
+                path: 'draggable-list',
+                icon: 'arrow-move',
+                name: 'draggable-list',
+                title: '付费习惯',
+                component: resolve => { require(['./views/my_components/draggable-list/draggable-list.vue'], resolve); }
+            }
+        ]
+    },
+    {
+        path: '/level',
+        icon: 'person',
+        name: 'level',
+        title: '等级分析',
+        component: Main,
+        children: [
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '等级详解',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'md-editor',
+                icon: 'ios-people',
+                name: 'md-editor',
+                title: '等级分布',
+                component: resolve => { require(['./views/my_components/markdown-editor/markdown-editor.vue'], resolve); }
+            },
+            {
+                path: 'image-editor',
+                icon: 'crop',
+                name: 'image-editor',
+                title: '新玩家进度',
+                component: resolve => { require(['./views/my_components/image-editor/image-editor.vue'], resolve); }
+            }
+        ]
+    },
+    {
+        path: '/task',
+        icon: 'person',
+        name: 'task',
+        title: '任务分析',
+        component: Main,
+        children: [
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '任务和关卡',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '新手任务',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            }
+        ]
+    },
+    {
+        path: '/admin',
+        icon: 'person',
+        name: 'admin',
+        title: '系统管理',
+        component: Main,
+        children: [
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '游戏管理',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '部门管理',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '权限管理',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '账号管理',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            }
+        ]
+    },
+    {
+        path: '/maintenance',
+        icon: 'person',
+        name: 'maintenance',
+        title: '运维管理',
+        component: Main,
+        children: [
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '游戏区服管理',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '游戏GM节点管理',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '参数管理',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '批量操作',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            }
+        ]
+    },
+    {
+        path: '/game',
+        icon: 'person',
+        name: 'game',
+        title: '游戏管理',
+        component: Main,
+        children: [
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '活动管理',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '公告管理',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            }
+        ]
+    },
+    {
+        path: '/account',
+        icon: 'person',
+        name: 'account',
+        title: '玩家管理',
+        component: Main,
+        children: [
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '玩家查询',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            },
+            {
+                path: 'text-editor',
+                icon: 'person-add',
+                name: 'text-editor',
+                title: '奖励发放',
+                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+            }
+        ]
+    },
+    {
         path: '/access',
         icon: 'key',
         name: 'access',
@@ -94,6 +365,16 @@ export const appRouter = [
         component: Main,
         children: [
             { path: 'index', title: {i18n: 'international'}, name: 'international_index', component: resolve => { require(['./views/international/international.vue'], resolve); } }
+        ]
+    },
+    {
+        path: '/concurrent',
+        icon: 'levels',
+        title: '在线分析',
+        name: 'concurrent',
+        component: Main,
+        children: [
+            { path: 'index', title: '在线分析', name: 'errorpage_index', component: resolve => { require(['./views/data/concurrent.vue'], resolve); } }
         ]
     },
     {
@@ -183,6 +464,20 @@ export const appRouter = [
         icon: 'ios-grid-view',
         name: 'tables',
         title: '表格',
+        component: Main,
+        children: [
+            { path: 'dragableTable', title: '可拖拽排序', name: 'dragable-table', icon: 'arrow-move', component: resolve => { require(['./views/tables/dragable-table.vue'], resolve); } },
+            { path: 'editableTable', title: '可编辑表格', name: 'editable-table', icon: 'edit', component: resolve => { require(['./views/tables/editable-table.vue'], resolve); } },
+            { path: 'searchableTable', title: '可搜索表格', name: 'searchable-table', icon: 'search', component: resolve => { require(['./views/tables/searchable-table.vue'], resolve); } },
+            { path: 'exportableTable', title: '表格导出数据', name: 'exportable-table', icon: 'code-download', component: resolve => { require(['./views/tables/exportable-table.vue'], resolve); } },
+            { path: 'table2image', title: '表格转图片', name: 'table-to-image', icon: 'images', component: resolve => { require(['./views/tables/table-to-image.vue'], resolve); } }
+        ]
+    },
+    {
+        path: '/data-tables',
+        icon: 'ios-grid-view',
+        name: 'data-tables',
+        title: 'DataTables表格',
         component: Main,
         children: [
             { path: 'dragableTable', title: '可拖拽排序', name: 'dragable-table', icon: 'arrow-move', component: resolve => { require(['./views/tables/dragable-table.vue'], resolve); } },
