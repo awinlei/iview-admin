@@ -83,83 +83,83 @@ export const appRouter = [
         component: Main,
         children: [
             {
-                path: 'text-editor',
-                icon: 'person-add',
-                name: 'text-editor',
-                title: '新增玩家',
-                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
-            },
-            {
-                path: 'md-editor',
+                path: 'playerNew',
                 icon: 'ios-people',
-                name: 'md-editor',
+                name: 'playerNew',
+                title: '新增玩家',
+                component: resolve => { require(['./views/player/player-new.vue'], resolve); }
+            },
+            {
+                path: 'playerActive',
+                icon: 'ios-people',
+                name: 'playerActive',
                 title: '活跃玩家',
-                component: resolve => { require(['./views/my_components/markdown-editor/markdown-editor.vue'], resolve); }
+                component: resolve => { require(['./views/player/player-active.vue'], resolve); }
             },
             {
-                path: 'image-editor',
+                path: 'playerConvertion',
                 icon: 'crop',
-                name: 'image-editor',
+                name: 'playerConvertion',
                 title: '付费转化',
-                component: resolve => { require(['./views/my_components/image-editor/image-editor.vue'], resolve); }
+                component: resolve => { require(['./views/player/player-convertion.vue'], resolve); }
             },
             {
-                path: 'draggable-list',
+                path: 'playerChurned',
                 icon: 'arrow-move',
-                name: 'draggable-list',
+                name: 'playerChurned',
                 title: '玩家流失',
-                component: resolve => { require(['./views/my_components/draggable-list/draggable-list.vue'], resolve); }
+                component: resolve => { require(['./views/player/player-churned.vue'], resolve); }
             },
             {
-                path: 'area-linkage',
+                path: 'plyaerBehavior',
                 icon: 'ios-camera',
-                name: 'area-linkage',
+                name: 'plyaerBehavior',
                 title: '游戏习惯',
-                component: resolve => { require(['./views/my_components/area-linkage/area-linkage.vue'], resolve); }
+                component: resolve => { require(['./views/player/player-behavior.vue'], resolve); }
             },
             {
-                path: 'file-upload',
+                path: 'plyaerDriver',
                 icon: 'ios-game-controller-b',
-                name: 'file-upload',
+                name: 'plyaerDriver',
                 title: '设备相关',
-                component: resolve => { require(['./views/my_components/file-upload/file-upload.vue'], resolve); }
+                component: resolve => { require(['./views/player/player-driver.vue'], resolve); }
             }
         ]
     },
     {
-        path: '/cash',
+        path: '/revenue',
         icon: 'person',
-        name: 'cash',
+        name: 'revenue',
         title: '收入分析',
         component: Main,
         children: [
             {
-                path: 'text-editor',
+                path: 'revenueIncomeData',
                 icon: 'person-add',
-                name: 'text-editor',
+                name: 'revenueIncomeData',
                 title: '收入数据',
-                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+                component: resolve => { require(['./views/revenue/revenue-incomeData.vue'], resolve); }
             },
             {
-                path: 'md-editor',
+                path: 'revenuePayPermeate',
                 icon: 'ios-people',
-                name: 'md-editor',
+                name: 'revenuePayPermeate',
                 title: '付费渗透',
-                component: resolve => { require(['./views/my_components/markdown-editor/markdown-editor.vue'], resolve); }
+                component: resolve => { require(['./views/revenue/revenue-payPermeate.vue'], resolve); }
             },
             {
-                path: 'image-editor',
+                path: 'revenueNewPlayerValue',
                 icon: 'crop',
-                name: 'image-editor',
+                name: 'revenueNewPlayerValue',
                 title: '新玩家价值',
-                component: resolve => { require(['./views/my_components/image-editor/image-editor.vue'], resolve); }
+                component: resolve => { require(['./views/revenue/revenue-newPlayerValue.vue'], resolve); }
             },
             {
-                path: 'draggable-list',
+                path: 'revenuePayHabit',
                 icon: 'arrow-move',
-                name: 'draggable-list',
+                name: 'revenuePayHabit',
                 title: '付费习惯',
-                component: resolve => { require(['./views/my_components/draggable-list/draggable-list.vue'], resolve); }
+                component: resolve => { require(['./views/revenue/revenue-payHabit.vue'], resolve); }
             }
         ]
     },
@@ -171,25 +171,25 @@ export const appRouter = [
         component: Main,
         children: [
             {
-                path: 'text-editor',
+                path: 'levelDetails',
                 icon: 'person-add',
-                name: 'text-editor',
+                name: 'levelDetails',
                 title: '等级详解',
-                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+                component: resolve => { require(['./views/level/level-details.vue'], resolve); }
             },
             {
-                path: 'md-editor',
+                path: 'levelDistribute',
                 icon: 'ios-people',
-                name: 'md-editor',
+                name: 'levelDistribute',
                 title: '等级分布',
-                component: resolve => { require(['./views/my_components/markdown-editor/markdown-editor.vue'], resolve); }
+                component: resolve => { require(['./views/level/level-distribute.vue'], resolve); }
             },
             {
-                path: 'image-editor',
+                path: 'levelSchedule',
                 icon: 'crop',
-                name: 'image-editor',
+                name: 'levelSchedule',
                 title: '新玩家进度',
-                component: resolve => { require(['./views/my_components/image-editor/image-editor.vue'], resolve); }
+                component: resolve => { require(['./views/level/level-schedule.vue'], resolve); }
             }
         ]
     },
@@ -201,55 +201,62 @@ export const appRouter = [
         component: Main,
         children: [
             {
-                path: 'text-editor',
+                path: 'taskDetails',
                 icon: 'person-add',
-                name: 'text-editor',
+                name: 'taskDetails',
                 title: '任务和关卡',
-                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+                component: resolve => { require(['./views/task/task-details.vue'], resolve); }
             },
             {
-                path: 'text-editor',
+                path: 'taskNew',
                 icon: 'person-add',
-                name: 'text-editor',
+                name: 'taskNew',
                 title: '新手任务',
-                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+                component: resolve => { require(['./views/task/task-new.vue'], resolve); }
+            },
+            {
+                path: 'taskMain',
+                icon: 'person-add',
+                name: 'taskMain',
+                title: '主线任务',
+                component: resolve => { require(['./views/task/task-main.vue'], resolve); }
             }
         ]
     },
     {
-        path: '/admin',
+        path: '/system',
         icon: 'person',
-        name: 'admin',
+        name: 'system',
         title: '系统管理',
         component: Main,
         children: [
             {
-                path: 'text-editor',
+                path: 'systemGame',
                 icon: 'person-add',
-                name: 'text-editor',
+                name: 'systemGame',
                 title: '游戏管理',
-                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+                component: resolve => { require(['./views/system/game.vue'], resolve); }
             },
             {
-                path: 'text-editor',
+                path: 'systemOperator',
                 icon: 'person-add',
-                name: 'text-editor',
+                name: 'operator',
                 title: '部门管理',
-                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+                component: resolve => { require(['./views/system/operator.vue'], resolve); }
             },
             {
-                path: 'text-editor',
+                path: 'permission',
                 icon: 'person-add',
-                name: 'text-editor',
+                name: 'permission',
                 title: '权限管理',
-                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+                component: resolve => { require(['./views/system/permission.vue'], resolve); }
             },
             {
-                path: 'text-editor',
+                path: 'admin',
                 icon: 'person-add',
-                name: 'text-editor',
-                title: '账号管理',
-                component: resolve => { require(['./views/my_components/text-editor/text-editor.vue'], resolve); }
+                name: 'admin',
+                title: '用户管理',
+                component: resolve => { require(['./views/system/admin.vue'], resolve); }
             }
         ]
     },
@@ -368,16 +375,6 @@ export const appRouter = [
         ]
     },
     {
-        path: '/concurrent',
-        icon: 'levels',
-        title: '在线分析',
-        name: 'concurrent',
-        component: Main,
-        children: [
-            { path: 'index', title: '在线分析', name: 'errorpage_index', component: resolve => { require(['./views/data/concurrent.vue'], resolve); } }
-        ]
-    },
-    {
         path: '/component',
         icon: 'social-buffer',
         name: 'component',
@@ -447,37 +444,11 @@ export const appRouter = [
 
         ]
     },
-    // {
-    //     path: '/charts',
-    //     icon: 'ios-analytics',
-    //     name: 'charts',
-    //     title: '图表',
-    //     component: Main,
-    //     children: [
-    //         { path: 'pie', title: '饼状图', name: 'pie', icon: 'ios-pie', component: resolve => { require('./views/access/access.vue') },
-    //         { path: 'histogram', title: '柱状图', name: 'histogram', icon: 'stats-bars', component: resolve => { require('./views/access/access.vue') }
-
-    //     ]
-    // },
     {
         path: '/tables',
         icon: 'ios-grid-view',
         name: 'tables',
         title: '表格',
-        component: Main,
-        children: [
-            { path: 'dragableTable', title: '可拖拽排序', name: 'dragable-table', icon: 'arrow-move', component: resolve => { require(['./views/tables/dragable-table.vue'], resolve); } },
-            { path: 'editableTable', title: '可编辑表格', name: 'editable-table', icon: 'edit', component: resolve => { require(['./views/tables/editable-table.vue'], resolve); } },
-            { path: 'searchableTable', title: '可搜索表格', name: 'searchable-table', icon: 'search', component: resolve => { require(['./views/tables/searchable-table.vue'], resolve); } },
-            { path: 'exportableTable', title: '表格导出数据', name: 'exportable-table', icon: 'code-download', component: resolve => { require(['./views/tables/exportable-table.vue'], resolve); } },
-            { path: 'table2image', title: '表格转图片', name: 'table-to-image', icon: 'images', component: resolve => { require(['./views/tables/table-to-image.vue'], resolve); } }
-        ]
-    },
-    {
-        path: '/data-tables',
-        icon: 'ios-grid-view',
-        name: 'data-tables',
-        title: 'DataTables表格',
         component: Main,
         children: [
             { path: 'dragableTable', title: '可拖拽排序', name: 'dragable-table', icon: 'arrow-move', component: resolve => { require(['./views/tables/dragable-table.vue'], resolve); } },
