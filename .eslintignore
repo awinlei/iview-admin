@@ -1,2 +1,4 @@
-src/vendors.js
+src/vendors
 src/libs/table2excel.js
+build
+src/views/my-components/text-editor/tinymce
