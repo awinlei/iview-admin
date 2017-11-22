@@ -13,7 +13,9 @@ export default {
         btnText: '点击查看模态框',
         modalText: '在这里你可以看到iview模态框默认的确定和取消按钮会切换语言',
         poptip: '国际化的气泡提示',
-        showPoptipText: '点击显示气泡提示'
+        showPoptipText: '点击显示气泡提示',
+        pageNumText: '条/页',
+        allText: '全部'
     },
     'zh-TW': {
         home: '首頁',

@@ -113,6 +113,7 @@ const store = new Vuex.Store({
         theme: '',
         cachePage: [],
         lang: '',
+        gameId: 0,//游戏ID
         isFullScreen: false,
         dontCache: ['text-editor'],  // 在这里定义你不想要缓存的页面的name属性值(参见路由配置router.js)
         // 定义两个状态
@@ -233,7 +234,6 @@ const store = new Vuex.Store({
             Cookies.set('locking', '0');
         },
         setMenuList (state, menulist) {
-            console.log(menulist);
             state.menuList = menulist;
         },
         updateMenulist (state) {
@@ -285,6 +285,9 @@ const store = new Vuex.Store({
         setAvator (state, path) {
             localStorage.avatorImgPath = path;
         },
+        setGame (state, gameId) {
+            state.gameId = gameId;
+        },
         switchLang (state, lang) {
             state.lang = lang;
             Vue.config.lang = lang;
@@ -319,32 +322,32 @@ const store = new Vuex.Store({
     },
     actions: {
         // 封装一个 ajax 方法
-        saveForm (context) {
-         console.log('调用成功');
-         console.log(context);
+        // saveForm (context) {
+        //  console.log('调用成功');
+        //  console.log(context);
 
-            Util.ajax.post('/api', {
-                firstName: 'Fred',
-                lastName: 'Flintstone'
-                })
-                .then(function (response) {
-                    console.log('start');
-                    console.log(response.data);
-                    console.log('end');
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-        //   axios({
-        //       method: 'post',
-        //       url: 'http://ci.youzu.com/api',
-        //       data: context.state.test02
-        //   }).then(function(res){
-        //      console.log(res)
-        //   }).catch(function(err){
-        //      console.log(err)
-        //   })
-         }
+        //     Util.ajax.post('/api', {
+        //         firstName: 'Fred',
+        //         lastName: 'Flintstone'
+        //         })
+        //         .then(function (response) {
+        //             console.log('start');
+        //             console.log(response.data);
+        //             console.log('end');
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error);
+        //         });
+        // //   axios({
+        // //       method: 'post',
+        // //       url: 'http://ci.youzu.com/api',
+        // //       data: context.state.test02
+        // //   }).then(function(res){
+        // //      console.log(res)
+        // //   }).catch(function(err){
+        // //      console.log(err)
+        // //   })
+        //  }
     }
 });
 
@@ -385,6 +388,6 @@ new Vue({
             }
         });
         this.$store.commit('setTagsList', tagsList);
-        this.$store.dispatch('saveForm',{cmd:'getserver',amount:10});
+        // this.$store.dispatch('saveForm',{cmd:'getserver',amount:10});
     }
 });
