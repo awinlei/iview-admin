@@ -15,8 +15,78 @@
                         <Input v-model="searchCon" @on-change="handleSearch" icon="search" placeholder="请输入关键字搜搜..." style="width: 200px;float: right;" />
                     </Row>
                     <Row class="margin-top-10 searchable-table-con">
-                        <Table border :loading="loading" :columns="tableColumns" :data="tableData"></Table>
+                        <Table border ref="gameTable" :loading="loading" :columns="tableColumns" :data="tableData"></Table>
                         <div style="margin: 10px;overflow: hidden">
+                        <span style="margin-right: 16px;">
+                          <Button type="primary" size="large" @click="exportData(1)"><Icon type="ios-download-outline"></Icon> 下载</Button>
+                          <Button type="success" size="large" @click="popModal = true">添加</Button>
+                          <!-- 模态框添加窗口 -->
+                          <Modal
+                              v-model="popModal"
+                              title="添加游戏"
+                              :closable="false"
+                              :styles="{top: '20px'}"
+                              @on-ok="addNew"
+                              @on-cancel="cancelAdd">
+                              <Row type="flex" justify="center">
+                               <Form :model="formItem" :label-width="80" ref="gameForm">
+                                  <FormItem label="Input" prop="input">
+                                      <Input v-model="formItem.input" placeholder="Enter something..."></Input>
+                                  </FormItem>
+                                  <FormItem label="Select">
+                                      <Select v-model="formItem.select">
+                                          <Option value="beijing">New York</Option>
+                                          <Option value="shanghai">London</Option>
+                                          <Option value="shenzhen">Sydney</Option>
+                                      </Select>
+                                  </FormItem>
+                                  <FormItem label="DatePicker">
+                                      <Row>
+                                          <Col span="11">
+                                              <DatePicker type="date" placeholder="Select date" v-model="formItem.date"></DatePicker>
+                                          </Col>
+                                          <Col span="2" style="text-align: center">-</Col>
+                                          <Col span="11">
+                                              <TimePicker type="time" placeholder="Select time" v-model="formItem.time"></TimePicker>
+                                          </Col>
+                                      </Row>
+                                  </FormItem>
+                                  <FormItem label="Radio">
+                                      <RadioGroup v-model="formItem.radio">
+                                          <Radio label="male">Male</Radio>
+                                          <Radio label="female">Female</Radio>
+                                      </RadioGroup>
+                                  </FormItem>
+                                  <FormItem label="Checkbox">
+                                      <CheckboxGroup v-model="formItem.checkbox">
+                                          <Checkbox label="Eat"></Checkbox>
+                                          <Checkbox label="Sleep"></Checkbox>
+                                          <Checkbox label="Run"></Checkbox>
+                                          <Checkbox label="Movie"></Checkbox>
+                                      </CheckboxGroup>
+                                  </FormItem>
+                                  <FormItem label="Switch">
+                                      <i-switch v-model="formItem.switch" size="large">
+                                          <span slot="open">On</span>
+                                          <span slot="close">Off</span>
+                                      </i-switch>
+                                  </FormItem>
+                                  <FormItem label="Slider">
+                                      <Slider v-model="formItem.slider" range></Slider>
+                                  </FormItem>
+                                  <FormItem label="Text">
+                                      <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+                                  </FormItem>
+                              </Form>
+                              </Row>
+                              <div slot="footer">
+                                  <Button type="text" @click="cancelAdd">Cancel</Button>
+                                  <Button type="ghost"  @click="handleReset('gameForm')" style="margin-left: 8px">Reset</Button>
+                                  <Button type="primary" :loading="loadResult" @click="addNew">Submit</Button>
+                              </div>
+                          </Modal>
+                          <!-- 模态框添加窗口 -->
+                          </span>
                         <div style="float: right;">
                             <Page :total="dataCount" :page-size="pageSize" :current="currentPage" show-total @on-change="changePage"></Page>
                         </div>
@@ -35,6 +105,19 @@ export default {
   name: "game",
   data() {
     return {
+      popModal: false,
+      loadResult: false,
+      formItem: {
+                    input: '',
+                    select: '',
+                    radio: 'male',
+                    checkbox: [],
+                    switch: true,
+                    date: '',
+                    time: '',
+                    slider: [0, 50],
+                    textarea: ''
+                },
       searchCon: "",
       initTable: [],
       tableData: [],
@@ -318,10 +401,45 @@ export default {
     // 删除
     remove (index) {
       this.tableData.splice(index, 1);
-    }
+    },
+    // 导出
+    exportData (type) {
+            if (type === 1) {
+                this.$refs.gameTable.exportCsv({
+                    filename: this.name
+                });
+            } else if (type === 2) {
+                this.$refs.gameTable.exportCsv({
+                    filename: this.name,
+                    original: false
+                });
+            }
+    },
+    addNew () {
+        // console.log(this.$refs);
+        this.loadResult = true;
+        let formItem = this.formItem;
+        console.log(this.formItem);
+        // 执行异步
+          setTimeout(() => {
+            this.popModal = false;
+              this.$Message.success('添加成功');
+          }, 2000);
+    },
+    cancelAdd () {
+      this.loadResult = false;
+      this.popModal = false;
+      this.$Message.error('取消成功');
+    },
+    handleReset (formName) {
+      this.loadResult = false;
+      console.log(this.$refs[formName]);
+      this.$refs[formName].resetFields();
+      this.$Message.error('重置成功');
+    },
   },
   mounted() {
-    
+
     let params = {
       cmdId: "getGameList", //获取游戏列表操作
       gameId: localStorage.gameId
