@@ -1,4 +1,5 @@
 import axios from 'axios';
+import qs from 'qs';
 import env from '../../build/env';
 import semver from 'semver';
 import packjson from '../../package.json';
@@ -17,10 +18,20 @@ const ajaxUrl = env === 'development'
         ? localStorage.gameApi
         : localStorage.gameApi;
 
+// 创建一个axios实例
 util.ajax = axios.create({
     baseURL: ajaxUrl,
+    // headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
     timeout: 30000
 });
+
+// 创建一个发送form表单参数类型的 post 请求 [api接口是ci框架]
+util.ajaxPost = function (url, params) {
+    params = qs.stringify(params);
+    // 设置在实例的请求头为 application/x-www-form-urlencoded，默认是json
+    util.ajax.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+    return util.ajax.post(url, params);
+};
 
 util.inOf = function (arr, targetArr) {
     let res = true;

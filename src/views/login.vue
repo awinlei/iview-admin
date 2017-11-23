@@ -48,9 +48,7 @@
 <script>
 import Cookies from 'js-cookie';
 import util from '@/libs/util';
-import * as gameConfig from '../../build/games.js';
-
-console.log(gameConfig);
+import * as gameConfig from '../../build/games';
 
 export default {
     data () {

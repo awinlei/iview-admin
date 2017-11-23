@@ -254,9 +254,7 @@ export default {
     // 分页数据(ajax异步获取，一次性获取完毕)
     mockTableData(params) {
       let ajaxData = [];
-      console.log(this.$store.state.app);
-      util.ajax
-        .post("", params)
+      util.ajaxPost("", params)
         .then(
           function(response) {
             // 遍历结果数据
@@ -323,10 +321,12 @@ export default {
     }
   },
   mounted() {
-    var params = {
+    
+    let params = {
       cmdId: "getGameList", //获取游戏列表操作
-      gameId: this.$store.state.gameId
+      gameId: localStorage.gameId
     };
+
     this.init(params);
   }
 };
