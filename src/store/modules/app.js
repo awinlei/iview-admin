@@ -169,8 +169,13 @@ const app = {
         setAvator (state, path) {
             localStorage.avatorImgPath = path;
         },
-        setGame (state, gameId) {
-            state.gameId = gameId;
+        // 游戏的ID
+        setGameId (state, gameId) {
+            localStorage.gameId = gameId;
+        },
+         // 游戏后端URL
+        setGameApi (state, gameApi) {
+            localStorage.gameApi = gameApi;
         },
         switchLang (state, lang) {
             state.lang = lang;

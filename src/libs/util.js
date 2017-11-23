@@ -12,10 +12,10 @@ util.title = function (title) {
 };
 
 const ajaxUrl = env === 'development'
-    ? 'http://ci.youzu.com/'
+    ? localStorage.gameApi ? localStorage.gameApi : 'http://127.0.0.1/'
 : env === 'production'
-? 'https://www.url.com'
-: 'https://debug.url.com';
+        ? localStorage.gameApi
+        : localStorage.gameApi;
 
 util.ajax = axios.create({
     baseURL: ajaxUrl,

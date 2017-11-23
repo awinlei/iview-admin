@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Util from "../../libs/util";
+import util from '@/libs/util';
 
 export default {
   name: "game",
@@ -58,6 +58,10 @@ export default {
         {
           title: "游戏主页",
           key: "site"
+        },
+        {
+          title: "游戏接口",
+          key: "api_url"
         },
         {
           title: "状态",
@@ -174,7 +178,7 @@ export default {
           title: "开服时间",
           key: "update",
           render: (h, params) => {
-            return h("div",Util.formatDate(this.tableData[params.index].update)
+            return h("div",util.formatDate(this.tableData[params.index].update)
             );
           }
         },
@@ -250,8 +254,9 @@ export default {
     // 分页数据(ajax异步获取，一次性获取完毕)
     mockTableData(params) {
       let ajaxData = [];
-      Util.ajax
-        .post("/api", params)
+      console.log(this.$store.state.app);
+      util.ajax
+        .post("", params)
         .then(
           function(response) {
             // 遍历结果数据
@@ -260,6 +265,7 @@ export default {
                 ajaxData.push({
                   name: item.name + Math.floor(Math.random() * 7 + 1),
                   site: item.site,
+                  api_url: item.api_url,
                   status: Math.floor(Math.random() * 3 + 1),
                   portrayal: ["City", "People", "Cost", "Life", "Entertainment"],
                   people: [{}],

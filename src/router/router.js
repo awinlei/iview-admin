@@ -69,7 +69,7 @@ export const appRouter = [
         path: '/sumary',
         icon: 'stats-bars',
         name: 'sumary',
-        title: '概览',
+        title: '游戏概览',
         component: Main,
         children: [
             { path: 'index', title: '游戏概览', name: 'sumary_index', component: resolve => { require(['@/views/sumary/sumary.vue'], resolve); } }
@@ -260,89 +260,89 @@ export const appRouter = [
             }
         ]
     },
-    {
-        path: '/maintenance',
-        icon: 'person',
-        name: 'maintenance',
-        title: '运维管理',
-        component: Main,
-        children: [
-            {
-                path: 'text-editor',
-                icon: 'person-add',
-                name: 'text-editor',
-                title: '游戏区服管理',
-                component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
-            },
-            {
-                path: 'text-editor',
-                icon: 'person-add',
-                name: 'text-editor',
-                title: '游戏GM节点管理',
-                component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
-            },
-            {
-                path: 'text-editor',
-                icon: 'person-add',
-                name: 'text-editor',
-                title: '参数管理',
-                component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
-            },
-            {
-                path: 'text-editor',
-                icon: 'person-add',
-                name: 'text-editor',
-                title: '批量操作',
-                component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
-            }
-        ]
-    },
-    {
-        path: '/game',
-        icon: 'person',
-        name: 'game',
-        title: '游戏管理',
-        component: Main,
-        children: [
-            {
-                path: 'text-editor',
-                icon: 'person-add',
-                name: 'text-editor',
-                title: '活动管理',
-                component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
-            },
-            {
-                path: 'text-editor',
-                icon: 'person-add',
-                name: 'text-editor',
-                title: '公告管理',
-                component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
-            }
-        ]
-    },
-    {
-        path: '/account',
-        icon: 'person',
-        name: 'account',
-        title: '玩家管理',
-        component: Main,
-        children: [
-            {
-                path: 'text-editor',
-                icon: 'person-add',
-                name: 'text-editor',
-                title: '玩家查询',
-                component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
-            },
-            {
-                path: 'text-editor',
-                icon: 'person-add',
-                name: 'text-editor',
-                title: '奖励发放',
-                component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
-            }
-        ]
-    },
+    // {
+    //     path: '/maintenance',
+    //     icon: 'person',
+    //     name: 'maintenance',
+    //     title: '运维管理',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'person-add',
+    //             name: 'text-editor',
+    //             title: '游戏区服管理',
+    //             component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'person-add',
+    //             name: 'text-editor',
+    //             title: '游戏GM节点管理',
+    //             component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'person-add',
+    //             name: 'text-editor',
+    //             title: '参数管理',
+    //             component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'person-add',
+    //             name: 'text-editor',
+    //             title: '批量操作',
+    //             component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/game',
+    //     icon: 'person',
+    //     name: 'game',
+    //     title: '游戏管理',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'person-add',
+    //             name: 'text-editor',
+    //             title: '活动管理',
+    //             component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'person-add',
+    //             name: 'text-editor',
+    //             title: '公告管理',
+    //             component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/account',
+    //     icon: 'person',
+    //     name: 'account',
+    //     title: '玩家管理',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'person-add',
+    //             name: 'text-editor',
+    //             title: '玩家查询',
+    //             component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'text-editor',
+    //             icon: 'person-add',
+    //             name: 'text-editor',
+    //             title: '奖励发放',
+    //             component: resolve => { require(['@/views/my_components/text-editor/text-editor.vue'], resolve); }
+    //         }
+    //     ]
+    // },
     {
         path: '/access',
         icon: 'key',
