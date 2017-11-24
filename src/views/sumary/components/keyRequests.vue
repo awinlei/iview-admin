@@ -3,6 +3,7 @@
 </style>
 <template>
     <div class="echart_tab_style">
+<!-- <span>{{dateRange}}</span> -->
         <Tabs type="card" :animated="true" @on-click="handleTabChange">
             <TabPane label="新增激活和账户" v-if="tab0"><div style="width:100%;height:100%;" id="key_request_con"></div></TabPane>
             <TabPane label="活跃玩家" v-if="tab1"><div style="width:100%;height:100%;" id="key_request_con1"></div></TabPane>
@@ -25,21 +26,35 @@ export default {
       tab1: true,
       tab2: true,
       tab3: true,
-      initTab: 'key_request_con',
+      tabId: 0,
+      queryParams: {
+        cmdId: "getKeyRequest", //获取关键数据指标
+        keyType: 0, //获取指标类型
+        gameId: localStorage.gameId
+      },
       chartObj: null,
-      optionLenged: ["ACU", "PCU"],
+      optionLenged: [
+        this.$t("activeDriverNumText"),
+        this.$t("activePlayerNumText")
+      ],
       optionXAxis: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
       optionyAxis: "value",
       optionData: [
         {
-          name: "ACU",
+          name: "",
           type: "line",
           stack: "总量",
           itemStyle: { normal: { areaStyle: { type: "default" } } },
-          data: []
+          data: [],
+          markPoint: {
+            data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
+          },
+          markLine: {
+            data: [{ type: "average", name: "平均值" }]
+          }
         },
         {
-          name: "PCU",
+          name: "",
           type: "line",
           stack: "总量",
           label: {
@@ -60,21 +75,25 @@ export default {
       ]
     };
   },
+  props: ["dateRange"],
   methods: {
     // 初始化数据
-    init(params) {
-      this.mockChartData(params);
-      this.showChart(this.initTab);
+    init() {
+      this.mockChartData();
     },
     // 分页数据(ajax异步获取，一次性获取完毕)
-    mockChartData(params) {
+    mockChartData() {
       let ajaxData = [];
-    //   this.optionData[0].data = [520, 532, 601, 534, 790, 830, 310];
+      //   this.optionData[0].data = [520, 532, 601, 534, 790, 830, 310];
       for (let index = 0; index < 7; index++) {
-          let element = Math.floor(Math.random() * 1000 + Math.random() * 10);
-          console.log();
-            this.optionData[0].data.push(element);
+        let element = Math.floor(Math.random() * 1000 + Math.random() * 10);
+
+        this.optionData[0].data.push(element);
       }
+      for (let index = 0; index < this.optionLenged.length; index++) {
+        this.optionData[index].name = this.optionLenged[index];
+      }
+
       this.optionData[1].data = [820, 645, 546, 745, 872, 624, 258];
       // //异步获取数据
       //   util
@@ -109,11 +128,16 @@ export default {
       //     .catch(function(error) {
       //       console.log(error);
       //     });
+      this.showChart();
     },
     // 图表展示
-    showChart(chartID) {
-      console.log(chartID);
+    showChart() {
       const option = {
+        color: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(204, 204, 204, 0.9)"
+        ],
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -130,7 +154,7 @@ export default {
           show: true,
           feature: {
             dataView: { show: true, readOnly: false },
-            magicType: { show: true, type: ["line", "bar"] },
+            magicType: { show: true, type: ["line", "bar", "stack", "tiled"] },
             restore: { show: true },
             saveAsImage: { show: true }
           }
@@ -157,13 +181,17 @@ export default {
         series: this.optionData //核心数据
       };
 
+      let chartId = "key_request_con";
+      if (this.tabId > 0) {
+        chartId = "key_request_con" + this.tabId;
+      }
       this.chartObj = echarts.init(
-        document.getElementById(chartID),
+        document.getElementById(chartId),
         "macarons"
       );
       // 3.0版本里的加载图示
       this.chartObj.showLoading({
-        text: this.$t('loadingDataText'),
+        text: this.$t("loadingDataText"),
         effect: "default", //'spin' | 'bar' | 'ring' | 'whirling' | 'dynamicLine' | 'bubble',
         maskColor: "#E0E0E0",
         color: "#c23531",
@@ -178,21 +206,52 @@ export default {
     },
     // 处理tab切换
     handleTabChange(name) {
-      let chartID = "key_request_con";
+      let chartId = "key_request_con";
       if (name > 0) {
-        chartID = "key_request_con" + name;
+        this.tabId = name;
       }
+      switch (this.tabId) {
+        case 0:
+          this.optionLenged = [
+            this.$t("oldPlayerText"),
+            this.$t("newPlayerText")
+          ];
+          break;
+        case 1:
+          this.optionLenged = [
+            this.$t("oldPlayerText"),
+            this.$t("newPlayerText")
+          ];
+          break;
+        case 2:
+          this.optionLenged = [
+            this.$t("oldChargePlayerText"),
+            this.$t("newChargePlayerText")
+          ];
+          break;
+        case 3:
+          this.optionLenged = [
+            this.$t("oldMoneyPlayerText"),
+            this.$t("newMoneyPlayerText")
+          ];
+          break;
 
-      this.showChart(chartID);
+        default:
+          break;
+      }
+      console.log(this.optionLenged);
+      this.queryParams.keyType = this.tabId;
+      this.mockChartData();
     }
   },
   mounted() {
-    let params = {
-      cmdId: "getKeyRequest", //获取关键数据指标
-      gameId: localStorage.gameId
-    };
+    console.log('keyRequests start');
+    console.log(this.dateRange); // 组件之间传递数据 命名方式，数据绑定都要注意
+    console.log('keyRequests end');
     //初始化
-    this.init(params);
+    this.init();
+
+    console.log(this.optionLenged);
   }
 };
 </script>

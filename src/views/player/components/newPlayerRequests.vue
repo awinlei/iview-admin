@@ -4,9 +4,8 @@
 <template>
     <div class="echart_tab_style">
         <Tabs type="card" :animated="true" @on-click="handleTabChange">
-            <TabPane label="日付费率" v-if="tab0"><div style="width:100%;height:100%;" id="charge_request_con"></div></TabPane>
-            <TabPane label="日ARPU" v-if="tab1"><div style="width:100%;height:100%;" id="charge_request_con1"></div></TabPane>
-            <TabPane label="日ARPPU" v-if="tab2"><div style="width:100%;height:100%;" id="charge_request_con2"></div></TabPane>
+            <TabPane label="新增激活和账户" v-if="tab0"><div style="width:100%;height:100%;" id="new_player_request_con"></div></TabPane>
+            <TabPane label="玩家转化" v-if="tab1"><div style="width:100%;height:100%;" id="new_player_request_con1"></div></TabPane>
         </Tabs>
     </div>
 </template>
@@ -17,40 +16,54 @@ require("@/libs/echarts/macarons");
 import util from "@/libs/util";
 
 export default {
-  name: "keyRequests",
+  name: "newPlayerRequests",
   data() {
     return {
       tab0: true,
       tab1: true,
       tab2: true,
+      tab3: true,
       tabId: 0,
-      tabColor: [],
       queryParams: {
-        cmdId: "getChargeRequest", //获取关键数据指标
+        cmdId: "getKeyRequest", //获取关键数据指标
         keyType: 0, //获取指标类型
         gameId: localStorage.gameId
       },
       chartObj: null,
       optionLenged: [
-        // this.$t("activeDriverNumText"),
-        this.$t("activePlayerNumText")
+        this.$t("retentionYesterday"),
+        this.$t("retentionWeek"),
+        this.$t("retentionMonth")
       ],
       optionXAxis: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
       optionyAxis: "value",
       optionData: [
-        // {
-        //   name: "",
-        //   type: "line",
-        //   stack: "总量",
-        //   itemStyle: { normal: { areaStyle: { type: "default" } } },
-        //   data: [],
-        //   markPoint: {
-        //     data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
-        //   },
-        //   markLine: {
-        //     data: [{ type: "average", name: "平均值" }]
-        //   }
-        // },
+        {
+          name: "",
+          type: "line",
+          stack: "总量",
+          itemStyle: { normal: { areaStyle: { type: "default" } } },
+          data: [],
+          markPoint: {
+            data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
+          },
+          markLine: {
+            data: [{ type: "average", name: "平均值" }]
+          }
+        },
+        {
+          name: "",
+          type: "line",
+          stack: "总量",
+          itemStyle: { normal: { areaStyle: { type: "default" } } },
+          data: [],
+          markPoint: {
+            data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
+          },
+          markLine: {
+            data: [{ type: "average", name: "平均值" }]
+          }
+        },
         {
           name: "",
           type: "line",
@@ -91,7 +104,8 @@ export default {
         this.optionData[index].name = this.optionLenged[index];
       }
 
-      //   this.optionData[1].data = [820, 645, 546, 745, 872, 624, 258];
+      this.optionData[1].data = [820, 645, 546, 745, 872, 624, 258];
+      this.optionData[2].data = [20, 145, 246, 645, 372, 724, 328];
       // //异步获取数据
       //   util
       //     .ajaxPost("", params)
@@ -130,7 +144,11 @@ export default {
     // 图表展示
     showChart() {
       const option = {
-        color: this.tabColor,
+        color: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(204, 204, 204, 0.9)"
+        ],
         tooltip: {
           trigger: "axis",
           axisPointer: {
@@ -174,9 +192,9 @@ export default {
         series: this.optionData //核心数据
       };
 
-      let chartId = "charge_request_con";
+      let chartId = "new_player_request_con";
       if (this.tabId > 0) {
-        chartId = "charge_request_con" + this.tabId;
+        chartId = "new_player_request_con" + this.tabId;
       }
       this.chartObj = echarts.init(
         document.getElementById(chartId),
@@ -199,50 +217,9 @@ export default {
     },
     // 处理tab切换
     handleTabChange(name) {
-      let chartId = "charge_request_con";
+      let chartId = "new_player_request_con";
       if (name > 0) {
         this.tabId = name;
-      }
-      switch (this.tabId) {
-        case 0:
-          this.optionLenged = [
-            // this.$t("oldPlayerText"),
-            this.$t("newPlayerText")
-          ];
-          this.tabColor = [
-            "rgba(109, 197, 253, 0.5)",
-            "rgba(114, 203, 104, 0.9)"
-          ];
-          break;
-        case 1:
-          this.optionLenged = [
-            // this.$t("oldPlayerText"),
-            this.$t("newPlayerText")
-          ];
-          this.tabColor = [
-            "rgba(109, 197, 253, 0.5)",
-            "rgba(114, 203, 104, 0.9)"
-          ];
-          break;
-        case 2:
-          this.optionLenged = [
-            // this.$t("oldChargePlayerText"),
-            this.$t("newChargePlayerText")
-          ];
-          this.tabColor = [
-            "rgba(109, 197, 253, 0.5)",
-            "rgba(114, 203, 104, 0.9)"
-          ];
-          break;
-        case 3:
-          this.optionLenged = [
-            // this.$t("oldMoneyPlayerText"),
-            this.$t("newMoneyPlayerText")
-          ];
-          break;
-
-        default:
-          break;
       }
       console.log(this.optionLenged);
       this.queryParams.keyType = this.tabId;

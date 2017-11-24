@@ -1,51 +1,120 @@
+
+<style lang="less">
+@import "./player.less";
+@import "../../styles/common.less";
+</style>
 <template>
-    <Table stripe :columns="columns1" :data="data1"></Table>
+    <div class="home-main">
+        <Row class="margin-top-10">
+            <Card>
+                <p slot="title" class="card-title">
+                    <Icon type="ios-shuffle-strong"></Icon>
+                    新增玩家
+                </p>
+                <div class="line-chart-con">
+                    <new-player-requests></new-player-requests>
+                </div>
+            </Card>
+        </Row>
+        <Row class="margin-top-10 echart_card_style">
+            <Col span="11">
+                 <Card>
+                    <p slot="title" class="card-title">
+                        <Icon type="ios-shuffle-strong"></Icon>
+                        单设备账户数量分析（小号分析）
+                    </p>
+                    <div class="line-chart-con">
+                        <small-account-requests></small-account-requests>
+                    </div>
+                </Card>
+            </Col>
+            <Col span="11" offset="2">
+                 <Card>
+                    <p slot="title" class="card-title">
+                        <Icon type="ios-shuffle-strong"></Icon>
+                        玩家账户类型
+                    </p>
+                    <div class="line-chart-con">
+                        <account-type-requests></account-type-requests>
+                    </div>
+                </Card>
+            </Col>
+        </Row>
+        <Row class="margin-top-10 echart_card_style">
+            <Col span="11">
+                 <Card>
+                    <p slot="title" class="card-title">
+                        <Icon type="ios-shuffle-strong"></Icon>
+                        地区
+                    </p>
+                    <div class="line-chart-con">
+                        <area-requests></area-requests>
+                    </div>
+                </Card>
+            </Col>
+            <Col span="11" offset="2">
+                 <Card>
+                    <p slot="title" class="card-title">
+                        <Icon type="ios-shuffle-strong"></Icon>
+                        渠道
+                    </p>
+                    <div class="line-chart-con">
+                        <operator-channel-requests></operator-channel-requests>
+                    </div>
+                </Card>
+            </Col>
+        </Row>
+        <Row class="margin-top-10 echart_card_style">
+            <Col span="11">
+                 <Card>
+                    <p slot="title" class="card-title">
+                        <Icon type="ios-shuffle-strong"></Icon>
+                        性別
+                    </p>
+                    <div class="line-chart-con">
+                        <gender-requests></gender-requests>
+                    </div>
+                </Card>
+            </Col>
+            <Col span="11" offset="2">
+                 <Card>
+                    <p slot="title" class="card-title">
+                        <Icon type="ios-shuffle-strong"></Icon>
+                        年齡
+                    </p>
+                    <div class="line-chart-con">
+                        <age-requests></age-requests>
+                    </div>
+                </Card>
+            </Col>
+        </Row>
+    </div>
 </template>
+
 <script>
-    export default {
-        data () {
-            return {
-                columns1: [
-                    {
-                        title: 'Name',
-                        key: 'name'
-                    },
-                    {
-                        title: 'Age',
-                        key: 'age'
-                    },
-                    {
-                        title: 'Address',
-                        key: 'address'
-                    }
-                ],
-                data1: [
-                    {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        date: '2016-10-03'
-                    },
-                    {
-                        name: 'Jim Green',
-                        age: 24,
-                        address: 'London No. 1 Lake Park',
-                        date: '2016-10-01'
-                    },
-                    {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02'
-                    },
-                    {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        date: '2016-10-04'
-                    }
-                ]
-            }
-        }
-    }
+import newPlayerRequests from "./components/newPlayerRequests.vue";
+import smallAccountRequests from "./components/smallAccountRequests.vue";
+import genderRequests from "./components/genderRequests.vue";
+import ageRequests from "./components/ageRequests.vue";
+import areaRequests from "./components/areaRequests.vue";
+import operatorChannelRequests from "./components/operatorChannelRequests.vue";
+import accountTypeRequests from "./components/accountTypeRequests.vue";
+
+export default {
+  name: "playerNew",
+  components: {
+    newPlayerRequests,
+    areaRequests,
+    ageRequests,
+    operatorChannelRequests,
+    accountTypeRequests,
+    genderRequests,
+    smallAccountRequests
+  },
+  data() {
+    return {};
+  },
+  computed: {},
+  methods: {}
+};
 </script>

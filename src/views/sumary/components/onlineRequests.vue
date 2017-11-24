@@ -13,7 +13,7 @@ export default {
       //   text: "ACU & PCU",
       //   left: "center"
       // },
-        color: ["rgba(255, 99, 0, 0.5)", "rgba(55, 200, 100, 0.5)"],
+      color: ["rgba(109, 197, 253, 0.5)", "rgba(114, 203, 104, 0.9)"],
       tooltip: {
         trigger: "axis",
         axisPointer: {
@@ -29,8 +29,9 @@ export default {
       toolbox: {
         show: true,
         feature: {
+          mark: { show: true },
           dataView: { show: true, readOnly: false },
-          magicType: { show: true, type: ["line", "bar"] },
+          magicType: { show: true, type: ["line", "bar", "stack", "tiled"] },
           restore: { show: true },
           saveAsImage: { show: true }
         }
@@ -90,7 +91,7 @@ export default {
     );
     // 3.0版本里的加载图示
     serviceRequestCharts.showLoading({
-      text: this.$t('loadingDataText'),
+      text: this.$t("loadingDataText"),
       effect: "default", //'spin' | 'bar' | 'ring' | 'whirling' | 'dynamicLine' | 'bubble',
       maskColor: "#E0E0E0",
       color: "#c23531",

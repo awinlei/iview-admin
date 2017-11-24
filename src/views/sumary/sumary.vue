@@ -1,7 +1,7 @@
 
 <style lang="less">
-    @import "./sumary.less";
-    @import "../../styles/common.less";
+@import "./sumary.less";
+@import "../../styles/common.less";
 </style>
 <template>
     <div class="home-main">
@@ -53,7 +53,7 @@
                         ></infor-card>
                     </Col>
                     <Col span="4" class-name="padding-left-5">
-                        <DatePicker large :value="date_range" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="Select date" style="width: 200px"></DatePicker>
+                        <Date-picker size="large" v-model="date_range" :value="date_range" type="daterange" :options="date_option" placement="bottom-end" @on-change="handleChangeDate" placeholder="选择日期" style="width: 250px"></Date-picker>
                     </Col>
             </Row>
         <Row class="margin-top-10">
@@ -74,7 +74,7 @@
                     关键指标
                 </p>
                 <div class="line-chart-con">
-                    <key-requests></key-requests>
+                    <key-requests :date-range="count"></key-requests>
                 </div>
             </Card>
         </Row>
@@ -115,44 +115,119 @@
 </template>
 
 <script>
-import dataSourcePie from './components/dataSourcePie.vue';
-import onlineRequests from './components/onlineRequests.vue';
-import keyRequests from './components/keyRequests.vue';
-import chargeRequests from './components/chargeRequests.vue';
-import retentionRequests from './components/retentionRequests.vue';
-import serviceRequests from './components/serviceRequests.vue';
-import countUp from './components/countUp.vue';
-import inforCard from './components/inforCard.vue';
+import dataSourcePie from "./components/dataSourcePie.vue";
+import onlineRequests from "./components/onlineRequests.vue";
+import keyRequests from "./components/keyRequests.vue";
+import chargeRequests from "./components/chargeRequests.vue";
+import retentionRequests from "./components/retentionRequests.vue";
+import serviceRequests from "./components/serviceRequests.vue";
+import countUp from "./components/countUp.vue";
+import inforCard from "./components/inforCard.vue";
 
 export default {
-    name: 'home',
-    components: {
-        dataSourcePie,
-        onlineRequests,
-        keyRequests,
-        chargeRequests,
-        retentionRequests,
-        serviceRequests,
-        countUp,
-        inforCard,
-    },
-    data () {
-        return {
-            count: {
-                createUser: 496,
-                cashedUser: 302,
-                visit: 3264,
-                collection: 24389305,
-                transfer: 39503498
+  name: "sumary",
+  //   注册子组件
+  components: {
+    dataSourcePie,
+    onlineRequests,
+    keyRequests,
+    chargeRequests,
+    retentionRequests,
+    serviceRequests,
+    countUp,
+    inforCard
+  },
+  data() {
+    return {
+      count: {
+        createUser: 496,
+        cashedUser: 302,
+        visit: 3264,
+        collection: 24389305,
+        transfer: 39503498
+      },
+      date_range: [new Date(), new Date()],
+      showcodeall: true,
+      open: false,
+      date_option: {
+        disabledDate(date) {
+          //return date && date.valueOf() < Date.now() - 86400000;
+        },
+        shortcuts: [
+          {
+            text: "今天",
+            value() {
+              const end = new Date();
+              const start = new Date();
+              return [start, end];
             },
-            showAddNewTodo: false,
-            newToDoItemValue: '',
-            date_range: ['2017-01-01', '2017-02-15']
-        };
-    },
-    computed: {
-    },
-    methods: {
+            onClick: picker => {
+              this.$Message.info("选择了今天");
+            }
+          },
+          {
+            text: "昨天",
+            value() {
+              const end = new Date();
+              end.setTime(end.getTime() - 3600 * 1000 * 24);
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24);
+              return [start, end];
+            },
+            onClick: picker => {
+              this.$Message.info("选择了昨天");
+            }
+          },
+          {
+            text: "最近3天",
+            value() {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 3);
+              return [start, end];
+            },
+            onClick: picker => {
+              this.$Message.info("选择了最近3天");
+            }
+          },
+          {
+            text: "最近7天",
+            value() {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              return [start, end];
+            }
+          },
+          {
+            text: "最近30天",
+            value() {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              return [start, end];
+            }
+          },
+          {
+            text: "最近90天",
+            value() {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              return [start, end];
+            }
+          }
+        ]
+      }
+    };
+  },
+  computed: {},
+  methods: {
+    handleChangeDate() {
+      console.log("handleChangeDate start ...");
+      console.log(this.date_range);
+      console.log("handleChangeDate end ...");
     }
+  }
 };
 </script>

@@ -1,13 +1,5 @@
-<style>
-
-</style>
 <template>
-    <div class="echart_tab_style">
-        <Tabs type="card" :animated="true" @on-click="handleTabChange">
-            <TabPane label="新增账户留存" v-if="tab0"><div style="width:100%;height:100%;" id="retention_request_con"></div></TabPane>
-            <TabPane label="激活设备留存" v-if="tab1"><div style="width:100%;height:100%;" id="retention_request_con1"></div></TabPane>
-        </Tabs>
-    </div>
+    <div style="width:100%;height:100%;" id="account_type_request_con"></div>
 </template>
 
 <script>
@@ -16,72 +8,27 @@ require("@/libs/echarts/macarons");
 import util from "@/libs/util";
 
 export default {
-  name: "keyRequests",
+  name: "accountTypeRequests",
   data() {
     return {
-      tab0: true,
-      tab1: true,
-      tab2: true,
-      tab3: true,
-      tabId: 0,
       queryParams: {
-        cmdId: "getKeyRequest", //获取关键数据指标
-        keyType: 0, //获取指标类型
+        cmdId: "getAccountTypeRequest", //获取关键数据指标
         gameId: localStorage.gameId
       },
       chartObj: null,
-      optionLenged: [
-        this.$t("retentionYesterday"),
-        this.$t("retentionWeek"),
-        this.$t("retentionMonth")
-      ],
-      optionXAxis: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-      optionyAxis: "value",
+      optionLenged: ["官网", "联运"],
+      optionXAxis: "value",
+      optionyAxis: ["匿名账号", "自有账号", "微博账号", "QQ账号", "91平台", "其他"],
       optionData: [
         {
           name: "",
-          type: "line",
-          stack: "总量",
-          itemStyle: { normal: { areaStyle: { type: "default" } } },
-          data: [],
-          markPoint: {
-            data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
-          },
-          markLine: {
-            data: [{ type: "average", name: "平均值" }]
-          }
+          type: "bar",
+          data: []
         },
         {
           name: "",
-          type: "line",
-          stack: "总量",
-          itemStyle: { normal: { areaStyle: { type: "default" } } },
-          data: [],
-          markPoint: {
-            data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
-          },
-          markLine: {
-            data: [{ type: "average", name: "平均值" }]
-          }
-        },
-        {
-          name: "",
-          type: "line",
-          stack: "总量",
-          label: {
-            normal: {
-              show: true,
-              position: "top"
-            }
-          },
-          itemStyle: { normal: { areaStyle: { type: "default" } } },
-          data: [],
-          markPoint: {
-            data: [{ type: "max", name: "最大值" }, { type: "min", name: "最小值" }]
-          },
-          markLine: {
-            data: [{ type: "average", name: "平均值" }]
-          }
+          type: "bar",
+          data: []
         }
       ]
     };
@@ -94,18 +41,16 @@ export default {
     // 分页数据(ajax异步获取，一次性获取完毕)
     mockChartData() {
       let ajaxData = [];
-      //   this.optionData[0].data = [520, 532, 601, 534, 790, 830, 310];
-      for (let index = 0; index < 7; index++) {
-        let element = Math.floor(Math.random() * 1000 + Math.random() * 10);
 
+      for (let index = 0; index < 6; index++) {
+        let element = Math.floor(Math.random() * 1000 + Math.random() * 10);
         this.optionData[0].data.push(element);
       }
+      this.optionData[1].data = [520, 532, 601, 534, 790, 830];
+
       for (let index = 0; index < this.optionLenged.length; index++) {
         this.optionData[index].name = this.optionLenged[index];
       }
-
-      this.optionData[1].data = [820, 645, 546, 745, 872, 624, 258];
-      this.optionData[2].data = [20, 145, 246, 645, 372, 724, 328];
       // //异步获取数据
       //   util
       //     .ajaxPost("", params)
@@ -145,18 +90,11 @@ export default {
     showChart() {
       const option = {
         color: [
-          "rgba(109, 197, 253, 0.5)",
-          "rgba(114, 203, 104, 0.9)",
-          "rgba(204, 204, 204, 0.9)"
+          "rgba(109, 214, 253, 0.5)",
+          "rgba(109, 214, 109, 0.9)"
         ],
         tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "cross",
-            label: {
-              backgroundColor: "#6a7985"
-            }
-          }
+          trigger: "axis"
         },
         legend: {
           data: this.optionLenged //标注
@@ -179,23 +117,21 @@ export default {
         },
         xAxis: [
           {
-            type: "category",
-            boundaryGap: false,
-            data: this.optionXAxis //x轴
+            type: this.optionXAxis, //x轴
+            boundaryGap: [0, 0.01]
           }
         ],
         yAxis: [
           {
-            type: this.optionyAxis //y轴
+            type: "category",
+            data: this.optionyAxis //y轴
           }
         ],
         series: this.optionData //核心数据
       };
 
-      let chartId = "retention_request_con";
-      if (this.tabId > 0) {
-        chartId = "retention_request_con" + this.tabId;
-      }
+      let chartId = "account_type_request_con";
+
       this.chartObj = echarts.init(
         document.getElementById(chartId),
         "macarons"
@@ -214,16 +150,6 @@ export default {
         this.chartObj.setOption(option);
         this.chartObj.resize();
       }, 2000);
-    },
-    // 处理tab切换
-    handleTabChange(name) {
-      let chartId = "retention_request_con";
-      if (name > 0) {
-        this.tabId = name;
-      }
-      console.log(this.optionLenged);
-      this.queryParams.keyType = this.tabId;
-      this.mockChartData();
     }
   },
   mounted() {

@@ -16,6 +16,17 @@ export default {
         showPoptipText: '点击显示气泡提示',
         pageNumText: '条/页',
         loadingDataText: '正在加载统计数据…',
+        activeDriverNumText: '设备激活',
+        activePlayerNumText: '玩家激活',
+        oldPlayerText: '老玩家',
+        newPlayerText: '新玩家',
+        oldChargePlayerText: '老付费玩家',
+        newChargePlayerText: '新付费玩家',
+        oldMoneyPlayerText: '老玩家收入',
+        newMoneyPlayerText: '新玩家收入',
+        retentionYesterday: '次日留存率',
+        retentionWeek: '7日留存率',
+        retentionMonth: '30日留存率',
         allText: '全部'
     },
     'zh-TW': {
