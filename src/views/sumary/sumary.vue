@@ -53,7 +53,7 @@
                         ></infor-card>
                     </Col>
                     <Col span="4" class-name="padding-left-5">
-                        <DatePicker :value="date_range" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="Select date" style="width: 200px"></DatePicker>
+                        <DatePicker large :value="date_range" format="yyyy/MM/dd" type="daterange" placement="bottom-end" placeholder="Select date" style="width: 200px"></DatePicker>
                     </Col>
             </Row>
         <Row class="margin-top-10">

@@ -4,6 +4,7 @@
 
 <script>
 const echarts = require('echarts');
+require('@/libs/echarts/macarons');
 export default {
     name: 'onlineRequests',
     mounted () {
@@ -17,8 +18,20 @@ export default {
                     }
                 }
             },
+            legend: {
+                data:['运营商/网络服务','银行/证券','游戏/视频','餐饮/外卖','快递/电商']
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line','bar']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
             grid: {
-                top: '3%',
                 left: '1.2%',
                 right: '1%',
                 bottom: '3%',
@@ -44,7 +57,7 @@ export default {
                     areaStyle: {normal: {
                         color: '#2d8cf0'
                     }},
-                    data: [120, 132, 101, 134, 90, 230, 210]
+                    data: [120, 132, 101, 134, 90, 230, 310]
                 },
                 {
                     name: '银行/证券',
@@ -86,12 +99,24 @@ export default {
                     areaStyle: {normal: {
                         color: '#398DBF'
                     }},
-                    data: [820, 645, 546, 745, 872, 624, 258]
+                    data: [820, 645, 546, 745, 872, 624, 258],
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    }
                 }
             ]
         };
-        const serviceRequestCharts = echarts.init(document.getElementById('online_request_con'));
+        const serviceRequestCharts = echarts.init(document.getElementById('online_request_con'),'macarons');
         serviceRequestCharts.setOption(option);
+
 
         window.addEventListener('resize', function () {
             serviceRequestCharts.resize();
