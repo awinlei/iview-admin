@@ -1,5 +1,5 @@
 <template>
-  <div class="echart_tab_style" style="width:100%;height:100%;" id="online_request_con"></div>
+  <div style="width:100%;height:100%;" id="online_request_con"></div>
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
       //   text: "ACU & PCU",
       //   left: "center"
       // },
-      //   color: ["rgba(255, 99, 0, 0.5)", "rgba(55, 200, 100, 0.5)"],
+        color: ["rgba(255, 99, 0, 0.5)", "rgba(55, 200, 100, 0.5)"],
       tooltip: {
         trigger: "axis",
         axisPointer: {
@@ -90,7 +90,7 @@ export default {
     );
     // 3.0版本里的加载图示
     serviceRequestCharts.showLoading({
-      text: "正在努力的读取数据中...",
+      text: this.$t('loadingDataText'),
       effect: "default", //'spin' | 'bar' | 'ring' | 'whirling' | 'dynamicLine' | 'bubble',
       maskColor: "#E0E0E0",
       color: "#c23531",

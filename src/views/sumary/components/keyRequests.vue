@@ -163,7 +163,7 @@ export default {
       );
       // 3.0版本里的加载图示
       this.chartObj.showLoading({
-        text: "正在努力的读取数据中...",
+        text: this.$t('loadingDataText'),
         effect: "default", //'spin' | 'bar' | 'ring' | 'whirling' | 'dynamicLine' | 'bubble',
         maskColor: "#E0E0E0",
         color: "#c23531",

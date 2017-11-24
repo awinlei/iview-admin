@@ -15,6 +15,7 @@ export default {
         poptip: '国际化的气泡提示',
         showPoptipText: '点击显示气泡提示',
         pageNumText: '条/页',
+        loadingDataText: '正在加载统计数据…',
         allText: '全部'
     },
     'zh-TW': {
