@@ -5,7 +5,7 @@
 <template>
     <div class="home-main">
         <Row>
-            <Col span="8">
+            <Col span="12">
                 <Row>
                     <Card>
                         <Row type="flex" class="user-infor">
@@ -23,7 +23,7 @@
                                 </Row>
                             </Col>
                         </Row>
-                        <div class="line-gray"></div>
+                        <div class="line-gray" style="height:5px;"></div>
                         <Row class="margin-top-8">
                             <Col span="8"><p class="notwrap">上次登录时间:</p></Col>
                             <Col span="16" class="padding-left-8">2017.09.12-13:32:20</Col>
@@ -32,10 +32,16 @@
                             <Col span="8"><p class="notwrap">上次登录地点:</p></Col>
                             <Col span="16" class="padding-left-8">北京</Col>
                         </Row>
+                        <Row class="margin-top-8">
+                            <Col span="8"><p class="notwrap">上次操作记录:</p></Col>
+                            <Col span="16" class="padding-left-8">审批大磊道具发送...</Col>
+                        </Row>
                     </Card>
                 </Row>
-                <Row class="margin-top-10">
-                    <Card>
+            </Col>
+            <Col span="12" class-name="padding-left-5">
+                <Row>
+                     <Card>
                         <p slot="title" class="card-title">
                             <Icon type="android-checkbox-outline"></Icon>
                             待办事项
@@ -64,111 +70,43 @@
                     </Card>
                 </Row>
             </Col>
-            <Col span="16" class-name="padding-left-5">
-                <Row>
-                    <Col span="6">
-                        <infor-card
-                            id-name="user_created_count"
-                            :end-val="count.createUser"
-                            iconType="android-person-add"
-                            color="#2d8cf0"
-                            intro-text="今日新增用户"
-                        ></infor-card>
-                    </Col>
-                    <Col span="6" class-name="padding-left-5">
-                        <infor-card
-                            id-name="visit_count"
-                            :end-val="count.visit"
-                            iconType="ios-eye"
-                            color="#64d572"
-                            :iconSize="50"
-                            intro-text="今日浏览量"
-                        ></infor-card>
-                    </Col>
-                    <Col span="6" class-name="padding-left-5">
-                        <infor-card
-                            id-name="collection_count"
-                            :end-val="count.collection"
-                            iconType="upload"
-                            color="#ffd572"
-                            intro-text="今日数据采集量"
-                        ></infor-card>
-                    </Col>
-                    <Col span="6" class-name="padding-left-5">
-                        <infor-card
-                            id-name="transfer_count"
-                            :end-val="count.transfer"
-                            iconType="shuffle"
-                            color="#f25e43"
-                            intro-text="今日服务调用量"
-                        ></infor-card>
-                    </Col>
-                </Row>
-                <Row class="margin-top-10">
-                    <Card :padding="0">
-                        <p slot="title" class="card-title">
-                            <Icon type="map"></Icon>
-                            今日服务调用地理分布
-                        </p>
-                        <div class="map-con">
-                            <Col span="10">
-                                <map-data-table :cityData="cityData" height="281" :style-obj="{margin: '12px 0 0 11px'}"></map-data-table>
-                            </Col>
-                            <Col span="14" class="map-incon">
-                                <Row type="flex" justify="center" align="middle">
-                                    <home-map :city-data="cityData"></home-map>
-                                </Row>
-                            </Col>
-                        </div>
-                    </Card>
-                </Row>
-            </Col>
         </Row>
         <Row class="margin-top-10">
-            <Col span="8">
+            <Col>
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-map"></Icon>
-                        上周每日来访量统计
+                        审批事项
                     </p>
                     <div class="data-source-row">
                         <visite-volume></visite-volume>
                     </div>
                 </Card>
             </Col>
-            <Col span="8" class="padding-left-10">
+        </Row>
+        <Row class="margin-top-10">
+            <Col span="12">
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-pulse-strong"></Icon>
-                        数据来源统计
+                        操作记录
                     </p>
                     <div class="data-source-row">
                         <data-source-pie></data-source-pie>
                     </div>
                 </Card>
             </Col>
-            <Col span="8" class="padding-left-10">
+            <Col span="12" class="padding-left-5">
                 <Card>
                     <p slot="title" class="card-title">
                         <Icon type="android-wifi"></Icon>
-                        各类用户服务调用变化统计
+                        登陆日志
                     </p>
                     <div class="data-source-row">
                         <user-flow></user-flow>
                     </div>
                 </Card>
             </Col>
-        </Row>
-        <Row class="margin-top-10">
-            <Card>
-                <p slot="title" class="card-title">
-                    <Icon type="ios-shuffle-strong"></Icon>
-                    上周每日服务调用量(万)
-                </p>
-                <div class="line-chart-con">
-                    <service-requests></service-requests>
-                </div>
-            </Card>
         </Row>
     </div>
 </template>
@@ -202,19 +140,19 @@ export default {
         return {
             toDoList: [
                 {
-                    title: '去iView官网学习完整的iView组件'
+                    title: '跟进系统内容'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件'
+                    title: '进行SN版本更新'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件'
+                    title: '进行ST版本更新'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件'
+                    title: '参加宣讲会'
                 },
                 {
-                    title: '去iView官网学习完整的iView组件'
+                    title: '进行codereview'
                 }
             ],
             count: {

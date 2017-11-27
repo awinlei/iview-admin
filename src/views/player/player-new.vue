@@ -16,9 +16,9 @@
                 </div>
             </Card>
         </Row>
-        <Row class="margin-top-10 echart_card_style">
-            <Col span="11">
-                 <Card>
+        <Row class="margin-top-10">
+            <Col span="12">
+                <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-shuffle-strong"></Icon>
                         单设备账户数量分析（小号分析）
@@ -28,8 +28,8 @@
                     </div>
                 </Card>
             </Col>
-            <Col span="11" offset="2">
-                 <Card>
+            <Col span="12" class="padding-left-5">
+                <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-shuffle-strong"></Icon>
                         玩家账户类型
@@ -40,8 +40,8 @@
                 </Card>
             </Col>
         </Row>
-        <Row class="margin-top-10 echart_card_style">
-            <Col span="11">
+        <Row class="margin-top-10">
+            <Col span="12">
                  <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-shuffle-strong"></Icon>
@@ -52,7 +52,7 @@
                     </div>
                 </Card>
             </Col>
-            <Col span="11" offset="2">
+            <Col span="12" class="padding-left-5">
                  <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-shuffle-strong"></Icon>
@@ -64,8 +64,8 @@
                 </Card>
             </Col>
         </Row>
-        <Row class="margin-top-10 echart_card_style">
-            <Col span="11">
+        <Row class="margin-top-10">
+            <Col span="12">
                  <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-shuffle-strong"></Icon>
@@ -76,7 +76,7 @@
                     </div>
                 </Card>
             </Col>
-            <Col span="11" offset="2">
+            <Col span="12" class='padding-left-5'>
                  <Card>
                     <p slot="title" class="card-title">
                         <Icon type="ios-shuffle-strong"></Icon>
