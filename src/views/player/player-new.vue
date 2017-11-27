@@ -122,9 +122,9 @@ export default {
           ["测试曲线", "内测曲线", "公测曲线"],
           [this.$t("retentionYesterday"),this.$t("retentionWeek"),this.$t("retentionMonth")],
           ["第一次", "第十次", "第百次"]
-        ], //曲线
+        ], //图表分类->曲线列表
         linesColor: [
-          "rgba(109, 197, 253, 0.5)","rgba(114, 203, 104, 0.9)","rgba(204, 204, 204, 0.9)"], //曲线颜色
+          "rgba(109, 197, 253, 0.5)","rgba(114, 203, 104, 0.9)","rgba(204, 204, 204, 0.9)"], //曲线颜色列表
         xaxis: (function() {
           //x轴
           let list = [];
@@ -133,7 +133,8 @@ export default {
           }
           return list;
         })(),
-        yaxis: "value" //y轴
+        yaxis: "value", //y轴
+        linesData: "value" //数据
       }
       //   testPlayerRequestsId: "test_player_request",
       //   testPlayerRequestsTabs: ["测试激活和账户", "测试玩家转化"]
