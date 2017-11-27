@@ -3,7 +3,7 @@
 </style>
 <template>
     <div class="echart_tab_style">
-<!-- <span>{{dateRange}}</span> -->
+      <span>父组件的参数{{dateRangeList}}</span>
         <Tabs type="card" :animated="true" @on-click="handleTabChange">
             <TabPane label="新增激活和账户" v-if="tab0"><div style="width:100%;height:100%;" id="key_request_con"></div></TabPane>
             <TabPane label="活跃玩家" v-if="tab1"><div style="width:100%;height:100%;" id="key_request_con1"></div></TabPane>
@@ -75,7 +75,7 @@ export default {
       ]
     };
   },
-  props: ["dateRange"],
+  props: ["dateRangeList"],
   methods: {
     // 初始化数据
     init() {
@@ -246,7 +246,7 @@ export default {
   },
   mounted() {
     console.log('keyRequests start');
-    console.log(this.dateRange); // 组件之间传递数据 命名方式，数据绑定都要注意
+    console.log(this.dateRangeList); // 组件之间传递数据 命名方式，数据绑定都要注意
     console.log('keyRequests end');
     //初始化
     this.init();

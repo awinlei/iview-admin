@@ -74,7 +74,7 @@
                     关键指标
                 </p>
                 <div class="line-chart-con">
-                    <key-requests :date-range="count"></key-requests>
+                    <key-requests :date-range-list="date_range"></key-requests>
                 </div>
             </Card>
         </Row>

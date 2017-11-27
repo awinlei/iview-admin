@@ -12,7 +12,7 @@
                     新增玩家
                 </p>
                 <div class="line-chart-con">
-                    <new-player-requests></new-player-requests>
+                    <new-player-requests :tabs="newPlayerRequestsTabs"></new-player-requests>
                 </div>
             </Card>
         </Row>
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import newPlayerRequests from "./components/newPlayerRequests.vue";
+import newPlayerRequests from "../my-components/echart-show/multiTabsChart.vue";
 import smallAccountRequests from "./components/smallAccountRequests.vue";
 import genderRequests from "./components/genderRequests.vue";
 import ageRequests from "./components/ageRequests.vue";
@@ -112,7 +112,36 @@ export default {
     smallAccountRequests
   },
   data() {
-    return {};
+    return {
+        // 新增玩家图表
+      newPlayerRequestsTabs: {
+        cardId: "new_player_request", //图表ID
+        tabList: ["新增激活和账户", "玩家转化", "新用户转化", "老用户转化"], //图表tabs列表 和 linesList对应
+        linesList: [
+          [this.$t("retentionYesterday"),this.$t("retentionWeek"),this.$t("retentionMonth")],
+          ["测试曲线", "内测曲线", "公测曲线"],
+          [this.$t("retentionYesterday"),this.$t("retentionWeek"),this.$t("retentionMonth")],
+          ["第一次", "第十次", "第百次"]
+        ], //曲线
+        linesColor: [
+          "rgba(109, 197, 253, 0.5)","rgba(114, 203, 104, 0.9)","rgba(204, 204, 204, 0.9)"], //曲线颜色
+        xaxis: (function() {
+          //x轴
+          let list = [];
+          for (let i = 1; i <= 7; i++) {
+            list.push("2017-11-" + i);
+          }
+          return list;
+        })(),
+        yaxis: "value" //y轴
+      }
+      //   testPlayerRequestsId: "test_player_request",
+      //   testPlayerRequestsTabs: ["测试激活和账户", "测试玩家转化"]
+    };
+  },
+  mounted() {
+    console.log("start..........");
+    console.log("end..........");
   },
   computed: {},
   methods: {}
