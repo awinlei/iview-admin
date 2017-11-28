@@ -9,10 +9,10 @@
             <Card>
                 <p slot="title" class="card-title">
                     <Icon type="ios-shuffle-strong"></Icon>
-                    每日流失
+                    留存率
                 </p>
                 <div class="line-chart-con">
-                    <churned-player-requests :tabs="churnedPlayerRequestsTabs"></churned-player-requests>
+                    <retention-player-requests :tabs="retentionPlayerRequestsTabs"></retention-player-requests>
                 </div>
             </Card>
         </Row>
@@ -20,10 +20,10 @@
             <Card>
                 <p slot="title" class="card-title">
                     <Icon type="ios-shuffle-strong"></Icon>
-                    流失用户分析
+                    留存用户分析
                 </p>
                 <div class="line-chart-con">
-                    <churned-analysis-requests :parent-params="churnedAnalysisRequests"></churned-analysis-requests>
+                    <retention-analysis-requests :parent-params="retentionAnalysisRequests"></retention-analysis-requests>
                 </div>
             </Card>
         </Row>
@@ -32,26 +32,23 @@
 
 <script>
 // 多页签图表
-import churnedPlayerRequests from "../my-components/echart-show/multiTabsChart.vue";
+import retentionPlayerRequests from "../my-components/echart-show/multiTabsChart.vue";
 // 单页签图表
-import churnedAnalysisRequests from "../my-components/echart-show/histogramChart.vue";
+import retentionAnalysisRequests from "../my-components/echart-show/histogramChart.vue";
 
 export default {
   name: "playerActive",
   components: {
-    churnedPlayerRequests,
-    churnedAnalysisRequests
+    retentionPlayerRequests,
+    retentionAnalysisRequests
   },
   data() {
     return {
       // 新增玩家图表
-      churnedPlayerRequestsTabs: {
-        requestId: "churnedPlayerRequestsTabs", //图表ID,ajax查询
-        tabList: ["每日流失", "每月流失"], //图表tabs列表 和 linesList对应
-        linesList: [
-          ["连续7日不登陆", "连续14日不登陆", "连续30日不登陆"],
-          ["连续7日不登陆", "连续14日不登陆", "连续30日不登陆"]
-        ], //图表分类->曲线列表
+      retentionPlayerRequestsTabs: {
+        requestId: "active_player_request", //图表ID,ajax查询
+        tabList: ["新增账户留存", "激活设备留存"], //图表tabs列表 和 linesList对应
+        linesList: [["次日留存率", "7日留存率", "30日留存率"], ["次日留存率", "7日留存率", "30日留存率"]], //图表分类->曲线列表
         linesColor: [
           "rgba(109, 197, 253, 0.5)",
           "rgba(114, 203, 104, 0.9)",
@@ -68,9 +65,9 @@ export default {
         yaxis: "value" //y轴
       },
       //单设备账户数量分析（小号分析）
-      churnedAnalysisRequests: {
-        requestId: "churnedAnalysisRequests", //图表ID,ajax查询
-        linesList: ["流失等级", "付费金额", "付费次数"], //图表分类->曲线列表
+      retentionAnalysisRequests: {
+        requestId: "small_account_request", //图表ID,ajax查询
+        linesList: ["Day1 留存用户", "Day7 留存用户", "Day30 留存用户"], //图表分类->曲线列表
         linesColor: [
           "rgba(109, 197, 253, 0.5)",
           "rgba(114, 203, 104, 0.9)",
@@ -79,16 +76,19 @@ export default {
         yaxis: (function() {
           //y轴
           let list = [];
-          for (let i = 1; i <= 10; i++) {
-            list.push(i);
-          }
+            for (let i = 1; i <= 10; i++) {
+              list.push(i);
+            }
           return list;
         })(),
         xaxis: "value" //x轴
       }
     };
   },
-  mounted() {},
+  mounted() {
+    console.log("start..........");
+    console.log("end..........");
+  },
   computed: {},
   methods: {}
 };

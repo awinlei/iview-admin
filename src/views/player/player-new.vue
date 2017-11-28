@@ -118,7 +118,7 @@ export default {
     return {
       // 新增玩家图表
       newPlayerRequestsTabs: {
-        requestId: "new_player_request", //图表ID,ajax查询
+        requestId: "newPlayerRequestsTabs", //图表ID,ajax查询
         tabList: ["新增激活和账户", "玩家转化", "新用户转化", "老用户转化", "其他用户转化"], //图表tabs列表 和 linesList对应
         linesList: [
           [
@@ -152,7 +152,7 @@ export default {
       },
       //单设备账户数量分析（小号分析）
       smallAccountRequests: {
-        requestId: "small_account_request", //图表ID,ajax查询
+        requestId: "smallAccountRequests", //图表ID,ajax查询
         linesList: ["2011年", "2012年", "2013年"], //图表分类->曲线列表
         linesColor: [
           "rgba(109, 197, 253, 0.5)",
@@ -171,7 +171,7 @@ export default {
       },
       //玩家账户类型
       accountTypeRequests: {
-        requestId: "account_type_request", //图表ID,ajax查询
+        requestId: "accountTypeRequests", //图表ID,ajax查询
         linesList: ["官网", "联运", "其他"], //图表分类->曲线列表
         linesColor: [
           "rgba(109, 197, 253, 0.5)",
@@ -190,7 +190,7 @@ export default {
       },
       //地区
       areaRequests: {
-        requestId: "area_request", //图表ID,ajax查询
+        requestId: "areaRequests", //图表ID,ajax查询
         linesList: ["中国", "美国", "台湾"], //图表分类->曲线列表
         linesColor: [
           "rgba(109, 197, 253, 0.5)",
@@ -209,7 +209,7 @@ export default {
       },
       //渠道
       operatorChannelRequests: {
-        requestId: "operator_channel_request", //图表ID,ajax查询
+        requestId: "operatorChannelRequests", //图表ID,ajax查询
         linesList: ["中国"], //图表分类->曲线列表
         linesColor: [
           "rgba(109, 197, 253, 0.5)",
@@ -228,7 +228,7 @@ export default {
       },
       //年龄分布
       ageRequests: {
-        requestId: "age_request", //图表ID,ajax查询
+        requestId: "ageRequests", //图表ID,ajax查询
         linesList: ["男", "女"], //图表分类->曲线列表
         linesColor: [
           "rgba(109, 197, 253, 0.5)",
@@ -251,7 +251,7 @@ export default {
       },
       //性别来源
       genderRequests: {
-        requestId: "gender_request", //图表ID,ajax查询
+        requestId: "genderRequests", //图表ID,ajax查询
         lineName: "访问来源", //图表分类->曲线列表
         linesList: ["男", "女"], //图表分类->曲线列表
         linesColor: ["rgba(109, 197, 253, 0.5)", "rgba(204, 204, 204, 0.9)"] //曲线颜色列表

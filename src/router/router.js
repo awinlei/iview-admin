@@ -85,28 +85,35 @@ export const appRouter = [
         children: [
             {
                 path: 'playerNew',
-                icon: 'ios-people',
+                icon: 'person-add',
                 name: 'playerNew',
                 title: '新增玩家',
                 component: resolve => { require(['@/views/player/player-new.vue'], resolve); }
             },
             {
                 path: 'playerActive',
-                icon: 'ios-people',
+                icon: 'person-stalker',
                 name: 'playerActive',
                 title: '活跃玩家',
                 component: resolve => { require(['@/views/player/player-active.vue'], resolve); }
             },
             {
+                path: 'playerRetention',
+                icon: 'ios-people',
+                name: 'playerRetention',
+                title: '玩家留存',
+                component: resolve => { require(['@/views/player/player-retention.vue'], resolve); }
+            },
+            {
                 path: 'playerConvertion',
-                icon: 'crop',
+                icon: 'social-usd',
                 name: 'playerConvertion',
                 title: '付费转化',
                 component: resolve => { require(['@/views/player/player-convertion.vue'], resolve); }
             },
             {
                 path: 'playerChurned',
-                icon: 'arrow-move',
+                icon: 'ios-people-outline',
                 name: 'playerChurned',
                 title: '玩家流失',
                 component: resolve => { require(['@/views/player/player-churned.vue'], resolve); }
