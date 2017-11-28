@@ -24,7 +24,7 @@
                         单设备账户数量分析（小号分析）
                     </p>
                     <div class="line-chart-con">
-                        <small-account-requests></small-account-requests>
+                        <small-account-requests :parent-params="smallAccountRequests"></small-account-requests>
                     </div>
                 </Card>
             </Col>
@@ -35,7 +35,7 @@
                         玩家账户类型
                     </p>
                     <div class="line-chart-con">
-                        <account-type-requests></account-type-requests>
+                        <account-type-requests :parent-params="accountTypeRequests"></account-type-requests>
                     </div>
                 </Card>
             </Col>
@@ -48,7 +48,7 @@
                         地区
                     </p>
                     <div class="line-chart-con">
-                        <area-requests></area-requests>
+                        <area-requests :parent-params="areaRequests"></area-requests>
                     </div>
                 </Card>
             </Col>
@@ -59,7 +59,7 @@
                         渠道
                     </p>
                     <div class="line-chart-con">
-                        <operator-channel-requests></operator-channel-requests>
+                        <operator-channel-requests :parent-params="operatorChannelRequests"></operator-channel-requests>
                     </div>
                 </Card>
             </Col>
@@ -72,7 +72,7 @@
                         性別
                     </p>
                     <div class="line-chart-con">
-                        <gender-requests></gender-requests>
+                        <gender-requests :parent-params="genderRequests"></gender-requests>
                     </div>
                 </Card>
             </Col>
@@ -83,7 +83,7 @@
                         年齡
                     </p>
                     <div class="line-chart-con">
-                        <age-requests></age-requests>
+                        <age-requests :parent-params="ageRequests"></age-requests>
                     </div>
                 </Card>
             </Col>
@@ -92,39 +92,54 @@
 </template>
 
 <script>
+// 多页签图表
 import newPlayerRequests from "../my-components/echart-show/multiTabsChart.vue";
-import smallAccountRequests from "./components/smallAccountRequests.vue";
-import genderRequests from "./components/genderRequests.vue";
-import ageRequests from "./components/ageRequests.vue";
-import areaRequests from "./components/areaRequests.vue";
-import operatorChannelRequests from "./components/operatorChannelRequests.vue";
-import accountTypeRequests from "./components/accountTypeRequests.vue";
+// 单页签图表
+import smallAccountRequests from "../my-components/echart-show/histogramChart.vue";
+import accountTypeRequests from "../my-components/echart-show/histogramChart.vue";
+import areaRequests from "../my-components/echart-show/histogramChart.vue";
+import operatorChannelRequests from "../my-components/echart-show/histogramChart.vue";
+import ageRequests from "../my-components/echart-show/histogramChart.vue";
+// 饼状图图表
+import genderRequests from "../my-components/echart-show/pieChart.vue";
 
 export default {
   name: "playerNew",
   components: {
     newPlayerRequests,
+    smallAccountRequests,
     areaRequests,
     ageRequests,
     operatorChannelRequests,
     accountTypeRequests,
-    genderRequests,
-    smallAccountRequests
+    genderRequests
   },
   data() {
     return {
-        // 新增玩家图表
+      // 新增玩家图表
       newPlayerRequestsTabs: {
-        cardId: "new_player_request", //图表ID
-        tabList: ["新增激活和账户", "玩家转化", "新用户转化", "老用户转化"], //图表tabs列表 和 linesList对应
+        requestId: "new_player_request", //图表ID,ajax查询
+        tabList: ["新增激活和账户", "玩家转化", "新用户转化", "老用户转化", "其他用户转化"], //图表tabs列表 和 linesList对应
         linesList: [
-          [this.$t("retentionYesterday"),this.$t("retentionWeek"),this.$t("retentionMonth")],
+          [
+            this.$t("retentionYesterday"),
+            this.$t("retentionWeek"),
+            this.$t("retentionMonth")
+          ],
           ["测试曲线", "内测曲线", "公测曲线"],
-          [this.$t("retentionYesterday"),this.$t("retentionWeek"),this.$t("retentionMonth")],
+          [
+            this.$t("retentionYesterday"),
+            this.$t("retentionWeek"),
+            this.$t("retentionMonth")
+          ],
+          ["第一次", "第十次", "第百次"],
           ["第一次", "第十次", "第百次"]
         ], //图表分类->曲线列表
         linesColor: [
-          "rgba(109, 197, 253, 0.5)","rgba(114, 203, 104, 0.9)","rgba(204, 204, 204, 0.9)"], //曲线颜色列表
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(204, 204, 204, 0.9)"
+        ], //曲线颜色列表
         xaxis: (function() {
           //x轴
           let list = [];
@@ -133,11 +148,114 @@ export default {
           }
           return list;
         })(),
-        yaxis: "value", //y轴
-        linesData: "value" //数据
+        yaxis: "value" //y轴
+      },
+      //单设备账户数量分析（小号分析）
+      smallAccountRequests: {
+        requestId: "small_account_request", //图表ID,ajax查询
+        linesList: ["2011年", "2012年", "2013年"], //图表分类->曲线列表
+        linesColor: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(204, 204, 204, 0.9)"
+        ], //曲线颜色列表
+        yaxis: (function() {
+          //y轴
+          let list = ["巴西", "印尼", "美国", "印度", "中国", "世界人口(万)"];
+          //   for (let i = 1; i <= 7; i++) {
+          //     list.push("2017-11-" + i);
+          //   }
+          return list;
+        })(),
+        xaxis: "value" //x轴
+      },
+      //玩家账户类型
+      accountTypeRequests: {
+        requestId: "account_type_request", //图表ID,ajax查询
+        linesList: ["官网", "联运", "其他"], //图表分类->曲线列表
+        linesColor: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(104, 214, 204, 0.9)"
+        ], //曲线颜色列表
+        yaxis: (function() {
+          //y轴
+          let list = ["自有账号", "微博账号", "QQ帐号", "匿名账号", "其他"];
+          //   for (let i = 1; i <= 7; i++) {
+          //     list.push("2017-11-" + i);
+          //   }
+          return list;
+        })(),
+        xaxis: "value" //x轴
+      },
+      //地区
+      areaRequests: {
+        requestId: "area_request", //图表ID,ajax查询
+        linesList: ["中国", "美国", "台湾"], //图表分类->曲线列表
+        linesColor: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(104, 214, 204, 0.9)"
+        ], //曲线颜色列表
+        yaxis: (function() {
+          //y轴
+          let list = ["新增激活玩家", "新增充值玩家"];
+          //   for (let i = 1; i <= 7; i++) {
+          //     list.push("2017-11-" + i);
+          //   }
+          return list;
+        })(),
+        xaxis: "value" //x轴
+      },
+      //渠道
+      operatorChannelRequests: {
+        requestId: "operator_channel_request", //图表ID,ajax查询
+        linesList: ["中国"], //图表分类->曲线列表
+        linesColor: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(104, 214, 204, 0.9)"
+        ], //曲线颜色列表
+        yaxis: (function() {
+          //y轴
+          let list = ["appstore", "91助手", "安卓市场", "360手机助手"];
+          //   for (let i = 1; i <= 7; i++) {
+          //     list.push("2017-11-" + i);
+          //   }
+          return list;
+        })(),
+        xaxis: "value" //x轴
+      },
+      //年龄分布
+      ageRequests: {
+        requestId: "age_request", //图表ID,ajax查询
+        linesList: ["男", "女"], //图表分类->曲线列表
+        linesColor: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(104, 214, 204, 0.9)"
+        ], //曲线颜色列表
+        yaxis: (function() {
+          //y轴
+          let list = [];
+          let age = 0;
+          for (let i = 10; i <= 60; ) {
+            i += 5;
+            age += 5;
+            let age_name = age + " ~ " + i + " 岁";
+            list.push(age_name);
+          }
+          return list;
+        })(),
+        xaxis: "value" //x轴
+      },
+      //性别来源
+      genderRequests: {
+        requestId: "gender_request", //图表ID,ajax查询
+        lineName: "访问来源", //图表分类->曲线列表
+        linesList: ["男", "女"], //图表分类->曲线列表
+        linesColor: ["rgba(109, 197, 253, 0.5)", "rgba(204, 204, 204, 0.9)"] //曲线颜色列表
       }
-      //   testPlayerRequestsId: "test_player_request",
-      //   testPlayerRequestsTabs: ["测试激活和账户", "测试玩家转化"]
     };
   },
   mounted() {
