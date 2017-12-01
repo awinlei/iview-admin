@@ -119,16 +119,16 @@ export const appRouter = [
                 component: resolve => { require(['@/views/player/player-churned.vue'], resolve); }
             },
             {
-                path: 'plyaerBehavior',
+                path: 'playerBehavior',
                 icon: 'ios-camera',
-                name: 'plyaerBehavior',
+                name: 'playerBehavior',
                 title: '游戏习惯',
                 component: resolve => { require(['@/views/player/player-behavior.vue'], resolve); }
             },
             {
-                path: 'plyaerDriver',
+                path: 'playerDriver',
                 icon: 'ios-game-controller-b',
-                name: 'plyaerDriver',
+                name: 'playerDriver',
                 title: '设备相关',
                 component: resolve => { require(['@/views/player/player-driver.vue'], resolve); }
             }

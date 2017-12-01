@@ -47,10 +47,10 @@ export default {
       // 新增玩家图表
       churnedPlayerRequests: {
         requestId: "churnedPlayerRequests", //图表ID,ajax查询
-        tabList: ["每日流失", "每月流失"], //图表tabs列表 和 linesList对应
+        tabList: ["每日流失", "每日回流"], //图表tabs列表 和 linesList对应
         linesList: [
-          ["连续7日不登陆", "连续14日不登陆", "连续30日不登陆"],
-          ["连续7日不登陆", "连续14日不登陆", "连续30日不登陆"]
+          ["每日流失率", "每日流失数"],
+          ["每日回流用户数"]
         ], //图表分类->曲线列表
         linesColor: [
           "rgba(109, 197, 253, 0.5)",
