@@ -129,6 +129,7 @@ export default {
         },
         legend: {
           orient: "vertical",
+          left: 'left',
           data: this.optionLenged //标注
         },
         toolbox: {

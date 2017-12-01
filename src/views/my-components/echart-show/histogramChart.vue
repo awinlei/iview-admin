@@ -49,8 +49,6 @@ export default {
     },
     // 分页数据(ajax异步获取，一次性获取完毕)
     mockChartData() {
-
-
       let ajaxData = [];
       // 格式化数据项
       let optionInit = new Array();
@@ -74,7 +72,7 @@ export default {
         optionInit.push(optionInitTmp);
       }
       this.optionData = optionInit;
-        console.log('mockChartData');
+      console.log("mockChartData");
       console.log(this.optionData);
       console.log(this.optionLenged);
       // //异步获取数据
@@ -118,7 +116,11 @@ export default {
       const option = {
         color: this.optionColor,
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow" // 默认为直线，可选为：'line' | 'shadow'
+          }
         },
         legend: {
           data: this.optionLenged //标注
