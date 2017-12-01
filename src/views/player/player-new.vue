@@ -12,7 +12,7 @@
                     新增玩家
                 </p>
                 <div class="line-chart-con">
-                    <new-player-requests :tabs="newPlayerRequestsTabs"></new-player-requests>
+                    <new-player-requests :parent-params="newPlayerRequests"></new-player-requests>
                 </div>
             </Card>
         </Row>
@@ -117,8 +117,8 @@ export default {
   data() {
     return {
       // 新增玩家图表
-      newPlayerRequestsTabs: {
-        requestId: "newPlayerRequestsTabs", //图表ID,ajax查询
+      newPlayerRequests: {
+        requestId: "newPlayerRequests", //图表ID,ajax查询
         tabList: ["新增激活和账户", "玩家转化", "新用户转化", "老用户转化", "其他用户转化"], //图表tabs列表 和 linesList对应
         linesList: [
           [

@@ -4,13 +4,7 @@
 </style>
 
 <template>
-    <div class="echart_tab_style">
-      <!-- <span>父组件的参数{{tabList}}</span> -->
-      <!-- <span>渲染出动态的tabs {{requestId}}</span> -->
-        <Tabs type="card" :animated="true" @on-click="handleTabChange">
-            <TabPane v-for="(tab,index) in tabs.tabList" :key="tab" :label="tab"><div style="width:100%;height:100%;" v-bind:id="tabs.requestId + index"></div></TabPane>
-        </Tabs>
-    </div>
+  <div style="width:100%;height:100%;" v-bind:id="parentParams.requestId"></div>
 </template>
  
 <script>
@@ -19,13 +13,11 @@ require("@/libs/echarts/macarons");
 import util from "@/libs/util";
 
 export default {
-  name: "tabsChart",
+  name: "linesChart",
   data() {
     return {
-      tabList: [], //页签列表
       optionColor: [], //颜色列表
       requestId: "", //图表名称
-      tabId: 0, //默认的页签选择
       queryParams: {
         requestId: "getDataRequest", //api查询接口制定
         requestType: 0, //api查询接口参数制定
@@ -52,16 +44,15 @@ export default {
       }
     };
   },
-  props: ["tabs"], // 父组件传递过来的参数
+  props: ["parentParams"], // 父组件传递过来的参数
   methods: {
     // 初始化数据
     init() {
-      this.tabList = this.tabs.tabList;
-      this.requestId = this.tabs.requestId;
-      this.optionLenged = this.tabs.linesList[this.tabId]; //曲线的数据分类
-      this.optionColor = this.tabs.linesColor;
-      this.optionXAxis = this.tabs.xaxis; //x轴数据
-      this.optionYAxis = this.tabs.yaxis; //y轴数据
+      this.requestId = this.parentParams.requestId;
+      this.optionLenged = this.parentParams.linesList; //曲线的数据分类
+      this.optionColor = this.parentParams.linesColor;
+      this.optionXAxis = this.parentParams.xaxis; //x轴数据
+      this.optionYAxis = this.parentParams.yaxis; //y轴数据
       this.mockChartData();
     },
     // 分页数据(ajax异步获取，一次性获取完毕)
@@ -179,7 +170,7 @@ export default {
         series: this.optionData //核心数据
       };
 
-      let chartId = this.requestId + this.tabId;
+      let chartId = this.requestId;
       // 设定图表的样式主题
       this.chartObj = echarts.init(
         document.getElementById(chartId),
@@ -199,22 +190,12 @@ export default {
         this.chartObj.setOption(option);
         this.chartObj.resize();
       }, 2000);
-    },
-    // 处理tab切换
-    handleTabChange(name) {
-      this.tabId = name;
-      this.optionLenged = this.tabs.linesList[this.tabId];
-      // 组装参数
-      this.queryParams.requestId = this.requestId;
-      this.queryParams.requestType = this.tabId;
-      // 获取数据并渲染
-      this.mockChartData();
     }
   },
   mounted() {
-    console.log("multiTabs start");
-    console.log(this.tabs); // 组件之间传递数据 命名方式，数据绑定都要注意
-    console.log("multiTabs end");
+    console.log("multiLines start");
+    console.log(this.parentParams); // 组件之间传递数据 命名方式，数据绑定都要注意
+    console.log("multiLines end");
     //初始化
     this.init();
   }

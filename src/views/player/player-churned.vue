@@ -12,7 +12,7 @@
                     每日流失
                 </p>
                 <div class="line-chart-con">
-                    <churned-player-requests :tabs="churnedPlayerRequestsTabs"></churned-player-requests>
+                    <churned-player-requests :parent-params="churnedPlayerRequests"></churned-player-requests>
                 </div>
             </Card>
         </Row>
@@ -45,8 +45,8 @@ export default {
   data() {
     return {
       // 新增玩家图表
-      churnedPlayerRequestsTabs: {
-        requestId: "churnedPlayerRequestsTabs", //图表ID,ajax查询
+      churnedPlayerRequests: {
+        requestId: "churnedPlayerRequests", //图表ID,ajax查询
         tabList: ["每日流失", "每月流失"], //图表tabs列表 和 linesList对应
         linesList: [
           ["连续7日不登陆", "连续14日不登陆", "连续30日不登陆"],

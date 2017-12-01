@@ -12,7 +12,7 @@
                     活跃玩家
                 </p>
                 <div class="line-chart-con">
-                    <active-player-requests :tabs="activePlayerRequestsTabs"></active-player-requests>
+                    <active-player-requests :parent-params="activePlayerRequests"></active-player-requests>
                 </div>
             </Card>
         </Row>
@@ -117,8 +117,8 @@ export default {
   data() {
     return {
       // 新增玩家图表
-      activePlayerRequestsTabs: {
-        requestId: "activePlayerRequestsTabs", //图表ID,ajax查询
+      activePlayerRequests: {
+        requestId: "activePlayerRequests", //图表ID,ajax查询
         tabList: ["DAU", "WAU", "MAU", "DAU/MAU"], //图表tabs列表 和 linesList对应
         linesList: [["DAU"], ["WAU"], ["MAU"], ["新玩家", "老玩家"]], //图表分类->曲线列表
         linesColor: [

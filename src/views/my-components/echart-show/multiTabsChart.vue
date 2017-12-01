@@ -6,9 +6,9 @@
 <template>
     <div class="echart_tab_style">
       <!-- <span>父组件的参数{{tabList}}</span> -->
-      <!-- <span>渲染出动态的tabs {{requestId}}</span> -->
+      <!-- <span>渲染出动态的parentParams {{requestId}}</span> -->
         <Tabs type="card" :animated="true" @on-click="handleTabChange">
-            <TabPane v-for="(tab,index) in tabs.tabList" :key="tab" :label="tab"><div style="width:100%;height:100%;" v-bind:id="tabs.requestId + index"></div></TabPane>
+            <TabPane v-for="(tab,index) in parentParams.tabList" :key="tab" :label="tab"><div style="width:100%;height:100%;" v-bind:id="parentParams.requestId + index"></div></TabPane>
         </Tabs>
     </div>
 </template>
@@ -52,16 +52,16 @@ export default {
       }
     };
   },
-  props: ["tabs"], // 父组件传递过来的参数
+  props: ["parentParams"], // 父组件传递过来的参数
   methods: {
     // 初始化数据
     init() {
-      this.tabList = this.tabs.tabList;
-      this.requestId = this.tabs.requestId;
-      this.optionLenged = this.tabs.linesList[this.tabId]; //曲线的数据分类
-      this.optionColor = this.tabs.linesColor;
-      this.optionXAxis = this.tabs.xaxis; //x轴数据
-      this.optionYAxis = this.tabs.yaxis; //y轴数据
+      this.tabList = this.parentParams.tabList;
+      this.requestId = this.parentParams.requestId;
+      this.optionLenged = this.parentParams.linesList[this.tabId]; //曲线的数据分类
+      this.optionColor = this.parentParams.linesColor;
+      this.optionXAxis = this.parentParams.xaxis; //x轴数据
+      this.optionYAxis = this.parentParams.yaxis; //y轴数据
       this.mockChartData();
     },
     // 分页数据(ajax异步获取，一次性获取完毕)
@@ -203,7 +203,7 @@ export default {
     // 处理tab切换
     handleTabChange(name) {
       this.tabId = name;
-      this.optionLenged = this.tabs.linesList[this.tabId];
+      this.optionLenged = this.parentParams.linesList[this.tabId];
       // 组装参数
       this.queryParams.requestId = this.requestId;
       this.queryParams.requestType = this.tabId;
@@ -213,7 +213,7 @@ export default {
   },
   mounted() {
     console.log("multiTabs start");
-    console.log(this.tabs); // 组件之间传递数据 命名方式，数据绑定都要注意
+    console.log(this.parentParams); // 组件之间传递数据 命名方式，数据绑定都要注意
     console.log("multiTabs end");
     //初始化
     this.init();

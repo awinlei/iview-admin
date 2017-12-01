@@ -12,7 +12,7 @@
                     留存率
                 </p>
                 <div class="line-chart-con">
-                    <retention-player-requests :tabs="retentionPlayerRequestsTabs"></retention-player-requests>
+                    <retention-player-requests :parent-params="retentionPlayerRequests"></retention-player-requests>
                 </div>
             </Card>
         </Row>
@@ -45,8 +45,8 @@ export default {
   data() {
     return {
       // 新增玩家图表
-      retentionPlayerRequestsTabs: {
-        requestId: "active_player_request", //图表ID,ajax查询
+      retentionPlayerRequests: {
+        requestId: "retentionPlayerRequests", //图表ID,ajax查询
         tabList: ["新增账户留存", "激活设备留存"], //图表tabs列表 和 linesList对应
         linesList: [["次日留存率", "7日留存率", "30日留存率"], ["次日留存率", "7日留存率", "30日留存率"]], //图表分类->曲线列表
         linesColor: [
@@ -66,7 +66,7 @@ export default {
       },
       //单设备账户数量分析（小号分析）
       retentionAnalysisRequests: {
-        requestId: "small_account_request", //图表ID,ajax查询
+        requestId: "retentionAnalysisRequests", //图表ID,ajax查询
         linesList: ["Day1 留存用户", "Day7 留存用户", "Day30 留存用户"], //图表分类->曲线列表
         linesColor: [
           "rgba(109, 197, 253, 0.5)",

@@ -10,46 +10,46 @@
                         <infor-card
                             id-name="user_created_count"
                             :end-val="count.createUser"
-                            iconType="android-person-add"
+                            iconType="iphone"
                             color="#2d8cf0"
-                            intro-text="今日新增用户"
+                            intro-text="设备激活"
                         ></infor-card>
                     </Col>
                     <Col span="4" class-name="padding-left-5">
                         <infor-card
                             id-name="user_cashed_count"
                             :end-val="count.cashedUser"
-                            iconType="person-stalker"
+                            iconType="ios-personadd"
                             color="#7A889B"
-                            intro-text="今日付费玩家"
+                            intro-text="新增玩家"
                         ></infor-card>
                     </Col>
                     <Col span="4" class-name="padding-left-5">
                         <infor-card
                             id-name="collection_count"
                             :end-val="count.collection"
-                            iconType="cash"
-                            color="#ffd572"
-                            intro-text="今日收入"
-                        ></infor-card>
-                    </Col>
-                    <Col span="4" class-name="padding-left-5">
-                        <infor-card
-                            id-name="visit_count"
-                            :end-val="count.visit"
-                            iconType="ios-eye"
+                            iconType="ios-people-outline"
                             color="#64d572"
-                            :iconSize="50"
-                            intro-text="今日最高在线"
+                            intro-text="付费玩家"
                         ></infor-card>
                     </Col>
                     <Col span="4" class-name="padding-left-5">
                         <infor-card
                             id-name="transfer_count"
+                            :end-val="count.visit"
+                            iconType="cash"
+                            color="#ffd572"
+                            :iconSize="50"
+                            intro-text="收入"
+                        ></infor-card>
+                    </Col>
+                    <Col span="4" class-name="padding-left-5">
+                        <infor-card
+                            id-name="visit_count"
                             :end-val="count.transfer"
-                            iconType="shuffle"
+                            iconType="stats-bars"
                             color="#f25e43"
-                            intro-text="今日服务调用量"
+                            intro-text="今日最高在线"
                         ></infor-card>
                     </Col>
                     <Col span="4" class-name="padding-left-5">
@@ -63,7 +63,7 @@
                     在线趋势
                 </p>
                 <div class="line-chart-con">
-                    <online-requests></online-requests>
+                    <online-requests :parent-params="onlineRequests"></online-requests>
                 </div>
             </Card>
         </Row>
@@ -74,7 +74,7 @@
                     关键指标
                 </p>
                 <div class="line-chart-con">
-                    <key-requests :date-range-list="date_range"></key-requests>
+                    <key-requests :parent-params="keyRequests"></key-requests>
                 </div>
             </Card>
         </Row>
@@ -85,7 +85,7 @@
                     付费渗透
                 </p>
                 <div class="line-chart-con">
-                    <charge-requests></charge-requests>
+                    <charge-requests :parent-params="chargeRequests"></charge-requests>
                 </div>
             </Card>
         </Row>
@@ -96,7 +96,7 @@
                     玩家留存
                 </p>
                 <div class="line-chart-con">
-                    <retention-requests></retention-requests>
+                    <retention-requests :parent-params="retentionRequests"></retention-requests>
                 </div>
             </Card>
         </Row>
@@ -107,7 +107,7 @@
                     平均时长和次数
                 </p>
                 <div class="line-chart-con">
-                    <service-requests></service-requests>
+                    <indicator-requests :parent-params="indicatorRequests"></indicator-requests>
                 </div>
             </Card>
         </Row>
@@ -115,12 +115,16 @@
 </template>
 
 <script>
-import dataSourcePie from "./components/dataSourcePie.vue";
-import onlineRequests from "./components/onlineRequests.vue";
-import keyRequests from "./components/keyRequests.vue";
-import chargeRequests from "./components/chargeRequests.vue";
-import retentionRequests from "./components/retentionRequests.vue";
-import serviceRequests from "./components/serviceRequests.vue";
+// 单页签多线条图表
+import onlineRequests from "../my-components/echart-show/multiLinesChart.vue";
+import indicatorRequests from "../my-components/echart-show/multiLinesChart.vue";
+
+// 多标签图表
+import keyRequests from "../my-components/echart-show/multiTabsChart.vue";
+import chargeRequests from "../my-components/echart-show/multiTabsChart.vue";
+import retentionRequests from "../my-components/echart-show/multiTabsChart.vue";
+
+//
 import countUp from "./components/countUp.vue";
 import inforCard from "./components/inforCard.vue";
 
@@ -128,12 +132,11 @@ export default {
   name: "sumary",
   //   注册子组件
   components: {
-    dataSourcePie,
     onlineRequests,
     keyRequests,
     chargeRequests,
     retentionRequests,
-    serviceRequests,
+    indicatorRequests,
     countUp,
     inforCard
   },
@@ -218,6 +221,97 @@ export default {
             }
           }
         ]
+      },
+      // 新增玩家图表
+      onlineRequests: {
+        requestId: "onlineRequests", //图表ID,ajax查询
+        linesList: ["ACU", "PCU"], //图表分类->曲线列表
+        linesColor: ["rgba(109, 197, 253, 0.5)", "rgba(114, 203, 104, 0.9)"], //曲线颜色列表
+        xaxis: (function() {
+          //x轴
+          let list = [];
+          for (let i = 1; i <= 7; i++) {
+            list.push("2017-11-" + i);
+          }
+          return list;
+        })(),
+        yaxis: "value" //y轴
+      },
+      indicatorRequests: {
+        requestId: "indicatorRequests", //图表ID,ajax查询
+        linesList: ["平均时长", "登陆次数"], //图表分类->曲线列表
+        linesColor: ["rgba(109, 197, 253, 0.5)", "rgba(114, 203, 104, 0.9)"], //曲线颜色列表
+        xaxis: (function() {
+          //x轴
+          let list = [];
+          for (let i = 1; i <= 7; i++) {
+            list.push("2017-11-" + i);
+          }
+          return list;
+        })(),
+        yaxis: "value" //y轴
+      },
+      keyRequests: {
+        requestId: "keyRequests", //图表ID,ajax查询
+        tabList: ["新增激活和账户", "活跃玩家", "付费玩家", "收入"], //图表tabs列表 和 linesList对应
+        linesList: [
+          ["设备激活", "新增玩家"],
+          ["新玩家", "老玩家"],
+          ["老付费玩家", "新付费玩家"],
+          ["收入"]
+        ], //图表分类->曲线列表
+        linesColor: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(204, 204, 204, 0.9)"
+        ], //曲线颜色列表
+        xaxis: (function() {
+          //x轴
+          let list = [];
+          for (let i = 1; i <= 7; i++) {
+            list.push("2017-11-" + i);
+          }
+          return list;
+        })(),
+        yaxis: "value" //y轴
+      },
+      chargeRequests: {
+        requestId: "chargeRequests", //图表ID,ajax查询
+        tabList: ["日付费率", "日ARPU", "日ARPPU"], //图表tabs列表 和 linesList对应
+        linesList: [["日付费率"], ["日ARPU"], ["日ARPPU"]], //图表分类->曲线列表
+        linesColor: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(204, 204, 204, 0.9)"
+        ], //曲线颜色列表
+        xaxis: (function() {
+          //x轴
+          let list = [];
+          for (let i = 1; i <= 7; i++) {
+            list.push("2017-11-" + i);
+          }
+          return list;
+        })(),
+        yaxis: "value" //y轴
+      },
+      retentionRequests: {
+        requestId: "retentionRequests", //图表ID,ajax查询
+        tabList: ["新增账户留存", "激活设备留存"], //图表tabs列表 和 linesList对应
+        linesList: [["30日留存率", "7日留存率", "次日留存率"], ["30日留存率", "7日留存率", "次日留存率"]], //图表分类->曲线列表
+        linesColor: [
+          "rgba(109, 197, 253, 0.5)",
+          "rgba(114, 203, 104, 0.9)",
+          "rgba(204, 204, 204, 0.9)"
+        ], //曲线颜色列表
+        xaxis: (function() {
+          //x轴
+          let list = [];
+          for (let i = 1; i <= 7; i++) {
+            list.push("2017-11-" + i);
+          }
+          return list;
+        })(),
+        yaxis: "value" //y轴
       }
     };
   },

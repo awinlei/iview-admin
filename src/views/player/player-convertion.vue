@@ -12,7 +12,7 @@
                     付费转化
                 </p>
                 <div class="line-chart-con">
-                    <convertion-player-requests :tabs="convertionPlayerRequestsTabs"></convertion-player-requests>
+                    <convertion-player-requests :parent-params="convertionPlayerRequests"></convertion-player-requests>
                 </div>
             </Card>
         </Row>
@@ -23,7 +23,7 @@
                     新玩家付费
                 </p>
                 <div class="line-chart-con">
-                    <convertion-new-player-requests :tabs="convertionNewPlayerRequestsTabs"></convertion-new-player-requests>
+                    <convertion-new-player-requests :parent-params="convertionNewPlayerRequests"></convertion-new-player-requests>
                 </div>
             </Card>
         </Row>
@@ -101,8 +101,8 @@ export default {
   data() {
     return {
       // 新增玩家图表
-      convertionPlayerRequestsTabs: {
-        requestId: "convertionPlayerRequestsTabs", //图表ID,ajax查询
+      convertionPlayerRequests: {
+        requestId: "convertionPlayerRequests", //图表ID,ajax查询
         tabList: ["新增付费玩家", "累计付费玩家", "总体付费玩家"], //图表tabs列表 和 linesList对应
         linesList: [["新增付费玩家"], ["累计付费玩家"], ["总体付费玩家"]], //图表分类->曲线列表
         linesColor: [
@@ -121,8 +121,8 @@ export default {
         yaxis: "value" //y轴
       },
       // 新增玩家图表
-      convertionNewPlayerRequestsTabs: {
-        requestId: "convertionNewPlayerRequestsTabs", //图表ID,ajax查询
+      convertionNewPlayerRequests: {
+        requestId: "convertionNewPlayerRequests", //图表ID,ajax查询
         tabList: ["首日付费率", "首周付费率", "首月付费率"], //图表tabs列表 和 linesList对应
         linesList: [["首日付费率", "首日付费数"], ["首周付费率", "首周付费数"], ["首月付费率", "首月付费数"]], //图表分类->曲线列表
         linesColor: [
