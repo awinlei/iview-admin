@@ -4,7 +4,7 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="help-buoy"></Icon>
+                        <Icon type="locked"></Icon>
                         权限列表[服务器分页]
                     </p>
                     <Row>

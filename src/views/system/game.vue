@@ -4,7 +4,7 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="help-buoy"></Icon>
+                        <Icon type="ios-game-controller-b"></Icon>
                         游戏列表[本地分页]
                     </p>
                     <Row>

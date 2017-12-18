@@ -136,7 +136,7 @@ export const appRouter = [
     },
     {
         path: '/revenue',
-        icon: 'person',
+        icon: 'cash',
         name: 'revenue',
         title: '收入分析',
         component: Main,
@@ -173,7 +173,7 @@ export const appRouter = [
     },
     {
         path: '/level',
-        icon: 'person',
+        icon: 'levels',
         name: 'level',
         title: '等级分析',
         component: Main,
@@ -203,7 +203,7 @@ export const appRouter = [
     },
     {
         path: '/task',
-        icon: 'person',
+        icon: 'podium',
         name: 'task',
         title: '任务分析',
         component: Main,
@@ -233,31 +233,24 @@ export const appRouter = [
     },
     {
         path: '/system',
-        icon: 'person',
+        icon: 'ios-gear',
         name: 'system',
         title: '系统管理',
         component: Main,
         children: [
             {
                 path: 'systemGame',
-                icon: 'person-add',
+                icon: 'ios-game-controller-b',
                 name: 'systemGame',
                 title: '游戏管理',
                 component: resolve => { require(['@/views/system/game.vue'], resolve); }
             },
             {
                 path: 'systemOperator',
-                icon: 'person-add',
+                icon: 'compass',
                 name: 'operator',
                 title: '部门管理',
                 component: resolve => { require(['@/views/system/operator.vue'], resolve); }
-            },
-            {
-                path: 'permission',
-                icon: 'person-add',
-                name: 'permission',
-                title: '权限管理',
-                component: resolve => { require(['@/views/system/permission.vue'], resolve); }
             },
             {
                 path: 'admin',
@@ -265,6 +258,13 @@ export const appRouter = [
                 name: 'admin',
                 title: '用户管理',
                 component: resolve => { require(['@/views/system/admin.vue'], resolve); }
+            },
+            {
+                path: 'permission',
+                icon: 'locked',
+                name: 'permission',
+                title: '权限管理',
+                component: resolve => { require(['@/views/system/permission.vue'], resolve); }
             }
         ]
     },

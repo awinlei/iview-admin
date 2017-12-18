@@ -152,6 +152,9 @@ export default {
                     title: '参加宣讲会'
                 },
                 {
+                    title: '参加培训'
+                },
+                {
                     title: '进行codereview'
                 }
             ],
