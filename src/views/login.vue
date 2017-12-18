@@ -95,7 +95,7 @@ export default {
                         Cookies.set('access', 1);
                     }
                     this.$router.push({
-                        name: 'home_index'
+                        name: 'sumary_index'
                     });
                 }
             });
