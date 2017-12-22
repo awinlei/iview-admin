@@ -265,6 +265,13 @@ export const appRouter = [
                 name: 'menus',
                 title: '菜单管理',
                 component: resolve => { require(['@/views/system/menu.vue'], resolve); }
+            },
+            {
+                path: 'games',
+                icon: 'ios-game-controller-b',
+                name: 'games',
+                title: '游戏管理',
+                component: resolve => { require(['@/views/system/game.vue'], resolve); }
             }
         ]
     },
