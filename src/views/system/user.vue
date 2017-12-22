@@ -5,7 +5,7 @@
                 <Card>
                     <p slot="title">
                         <Icon type="person-add"></Icon>
-                        用户列表[本地分页]
+                        用户列表
                     </p>
                     <Row>
                         <Select v-model="pageNum" icon="search" placeholder="请选择数量"  @on-change="changePageNum" style="width:120px;float:left;">
@@ -14,60 +14,57 @@
                         </Select>
                         <Input v-model="searchCon" @on-change="handleSearch" icon="search" placeholder="请输入关键字搜搜..." style="width: 200px;float: right;" />
                     </Row>
-                    <Row class="margin-top-10 searchable-table-con">
-                        <Table border ref="gameTable" :loading="loading" :columns="tableColumns" :data="tableData"></Table>
-                        <div style="margin: 10px;overflow: hidden">
+                    <Row class="margin-top-10">
+                        <can-edit-table refs="tableInfo" v-model="tableData" :columns-list="tableColumns" @on-delete="handleDel" @on-change="handleChange"></can-edit-table>
+                        <div style="margin-top: 10px;margin-right: 10px;overflow: hidden">
                         <span style="margin-right: 16px;">
                           <Button type="success" size="large" @click="popModal = true" icon="android-add">添加</Button>
-                          <!-- 模态框添加窗口 -->
+                           <!-- 模态框添加窗口 -->
                           <Modal
                               v-model="popModal"
-                              title="添加用户"
-                              :loading="loadResult"
+                              title="添加"
                               :closable="false"
                               :styles="{top: '20px'}"
-                              @on-ok="handleSubmit('formData')"
+                              @on-ok="handleSubmit('formGroup')"
                               @on-cancel="handleCancel">
                               <Row type="flex" justify="center">
-                              <Form ref="formData" :model="formData" :rules="ruleValidate" :label-width="80">
-                                  <FormItem label="账号" prop="name">
-                                      <Input v-model="formData.name" placeholder="Enter your name"></Input>
+                               <Form ref="formGroup" :model="formItem" :label-width="80" :rules="ruleValidate">
+                                   <FormItem label="账号" prop="username">
+                                      <Input v-model="formItem.username" placeholder="Enter your username"></Input>
                                   </FormItem>
                                   <FormItem label="真实姓名" prop="realname">
-                                      <Input v-model="formData.realname" placeholder="Enter your realname"></Input>
+                                      <Input v-model="formItem.realname" placeholder="Enter your realname"></Input>
                                   </FormItem>
-                                  <FormItem label="邮件" prop="mail">
-                                      <Input v-model="formData.mail" placeholder="Enter your e-mail"></Input>
+                                  <FormItem label="邮件" prop="email">
+                                      <Input v-model="formItem.email" placeholder="Enter your e-mail"></Input>
                                   </FormItem>
-                                  <FormItem label="手机" prop="mobile">
-                                      <Input v-model="formData.mobile" placeholder="Enter your mobilephone"></Input>
+                                  <FormItem label="手机" prop="phone">
+                                      <Input v-model="formItem.phone" placeholder="Enter your mobilephone"></Input>
                                   </FormItem>
-                                  <FormItem label="渠道" prop="channel">
-                                      <Select v-model="formData.channel" placeholder="选择渠道">
+                                  <FormItem label="渠道" prop="company">
+                                      <Select v-model="formItem.company" placeholder="选择渠道">
                                           <Option value="beijing">游族</Option>
                                           <Option value="shanghai">腾讯</Option>
                                           <Option value="shenzhen">小米</Option>
                                       </Select>
                                   </FormItem>
-                                  <FormItem label="状态" prop="status">
-                                      <RadioGroup v-model="formData.status">
-                                          <Radio label="male">激活</Radio>
-                                          <Radio label="female">未激活</Radio>
+                                  <FormItem label="状态" prop="active">
+                                      <RadioGroup v-model="formItem.active">
+                                          <Radio label="1">激活</Radio>
+                                          <Radio label="0">未激活</Radio>
                                       </RadioGroup>
                                   </FormItem>
-                                  <FormItem label="部门" prop="department">
-                                      <CheckboxGroup v-model="formData.department">
-                                          <Checkbox label="运维"></Checkbox>
-                                          <Checkbox label="运营"></Checkbox>
-                                          <Checkbox label="研发"></Checkbox>
+                                  <FormItem label="部门" prop="groups">
+                                      <CheckboxGroup v-model="formItem.groups">
+                                          <Checkbox v-for="item in groupList" :label="item.id">{{item.description}}</Checkbox>
                                       </CheckboxGroup>
                                   </FormItem>
                               </Form>
                               </Row>
                               <div slot="footer">
                                   <Button type="text" @click="handleCancel">取消</Button>
-                                  <Button type="ghost" @click="handleReset('formData')" style="margin-left: 8px">重置</Button>
-                                  <Button type="primary" @click="handleSubmit('formData')">提交</Button>
+                                  <Button type="ghost"  @click="handleReset('formGroup')" style="margin-left: 8px">重置</Button>
+                                  <Button type="primary" :loading="loadResult" @click="handleSubmit('formGroup')">提交</Button>
                               </div>
                           </Modal>
                           <!-- 模态框添加窗口 -->
@@ -76,7 +73,7 @@
                             <Page :total="dataCount" :page-size="pageSize" :current="currentPage" show-total @on-change="changePage"></Page>
                         </div>
                     </div>
-                    </Row>
+                  </Row>
                 </Card>
             </Col>
         </Row>
@@ -84,79 +81,121 @@
 </template>
 
 <script>
-import util from '@/libs/util';
+import expandRow from "../my-components/table-show/expandSpan.vue";
+import canEditTable from "../my-components/table-show/canEditTable.vue";
+
+import util from "@/libs/util";
 
 export default {
   name: "user",
+  components: { expandRow, canEditTable },
   data() {
     return {
+      apiName: "user",
       popModal: false,
-      loadResult: true,
-      formData: {
-                    name: '',
-                    mail: '',
-                    city: '',
-                    gender: '',
-                    interest: [],
-                    date: '',
-                    time: '',
-                    desc: ''
-                },
-      ruleValidate: {
-                    name: [
-                        { required: true, message: 'The name cannot be empty', trigger: 'blur' }
-                    ],
-                    realname: [
-                        { required: true, message: 'The realname cannot be empty', trigger: 'blur' }
-                    ],
-                    mail: [
-                        { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
-                        { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
-                    ],
-                    city: [
-                        { required: true, message: 'Please select the city', trigger: 'change' }
-                    ],
-                    mobile: [
-                        { required: true, message: 'The mobile cannot be empty', trigger: 'blur' }
-                    ]
-                },
+      loadResult: false,
       searchCon: "",
-      initTable: [],
-      tableData: [],
-      dataCount: 0,
-      pageSize:  10,
-      currentPage: 1,
-      loading:  true,
-      pageNum:  '',
-      pageNumList: [
-          {value: '10'},
-          {value: '20'},
-          {value: '50'},
-          {value: '100'},
-          {value: 'all'},
-      ],
+      formItem: {
+        username: "",
+        realname: "",
+        email: "",
+        company: "",
+        phone: ""
+      },
+      ruleValidate: {
+        username: [
+          {
+            required: true,
+            message: "The username cannot be empty",
+            trigger: "blur"
+          }
+        ],
+        realname: [
+          {
+            required: true,
+            message: "The realname cannot be empty",
+            trigger: "blur"
+          }
+        ],
+        email: [
+          {
+            required: true,
+            message: "Mailbox cannot be empty",
+            trigger: "blur"
+          },
+          { type: "email", message: "Incorrect email format", trigger: "blur" }
+        ],
+        company: [
+          {
+            required: true,
+            message: "Please select the company",
+            trigger: "change"
+          }
+        ],
+        phone: [
+          {
+            required: true,
+            message: "The mobile cannot be empty",
+            trigger: "blur"
+          }
+        ]
+      },
       tableColumns: [
         {
-          title: "用户名",
-          key: "name",
-          sortable: true,
+          type: "expand",
+          width: 50,
+          render: (h, params) => {
+            return h(expandRow, {
+              props: {
+                row: params.row
+              }
+            });
+          }
+        },
+        {
+          title: "用户ID",
+          key: "id",
+          sortable: true
+        },
+        {
+          title: "用户账号",
+          key: "username",
+          sortable: true
         },
         {
           title: "真实姓名",
-          key: "site"
+          key: "realname",
+          editable: true,
+          sortable: true
         },
         {
           title: "电子邮件",
-          key: "api_url"
+          key: "email",
+          editable: true,
+          sortable: true
         },
         {
-          title: "状态",
-          key: "status",
+          title: "手机号码",
+          key: "phone",
+          editable: true,
+          sortable: true
+        },
+        {
+          title: "渠道商",
+          key: "company",
+          editable: true,
+          sortable: true
+        },
+        {
+          title: "用户状态",
+          key: "active",
           sortable: true,
           render: (h, params) => {
             const row = params.row;
-            const color = row.status === 2 ? "blue" : row.status === 1 ? "green" : "red";
-            const text =  row.status === 2 ? "已激活" : row.status === 1 ? "封禁中" : "未激活";
+            const color =
+              row.active == 1 ? "blue" : row.active == 2 ? "green" : "red";
+            const text =
+              row.active == 1 ? "已激活" : row.active == 2 ? "封禁中" : "未激活";
             return h(
               "Tag",
               {
@@ -170,141 +209,117 @@ export default {
           }
         },
         {
-          title: "用户权限",
-          key: "portrayal",
-          sortable: true,
-          render: (h, params) => {
-            return h(
-              "Poptip",
-              {
-                props: {
-                  trigger: "hover",
-                  title: params.row.portrayal.length + "portrayals",
-                  placement: "bottom"
-                }
-              },
-              [
-                h("Tag", params.row.portrayal.length),
-                h(
-                  "div",
-                  {
-                    slot: "content"
-                  },
-                  [
-                    h(
-                      "ul",
-                      this.tableData[params.index].portrayal.map(item => {
-                        return h(
-                          "li",
-                          {
-                            style: {
-                              textAlign: "center",
-                              padding: "4px"
-                            }
-                          },
-                          item
-                        );
-                      })
-                    )
-                  ]
-                )
-              ]
-            );
-          }
-        },
-        {
-          title: "所属联运商",
-          key: "people",
-          render: (h, params) => {
-            return h(
-              "Poptip",
-              {
-                props: {
-                  trigger: "hover",
-                  title: params.row.people.length + "customers",
-                  placement: "bottom"
-                }
-              },
-              [
-                h("Tag", params.row.people.length),
-                h(
-                  "div",
-                  {
-                    slot: "content"
-                  },
-                  [
-                    h(
-                      "ul",
-                      this.tableData[params.index].people.map(item => {
-                        return h(
-                          "li",
-                          {
-                            style: {
-                              textAlign: "center",
-                              padding: "4px"
-                            }
-                          },
-                          item.n + "：" + item.c + "People"
-                        );
-                      })
-                    )
-                  ]
-                )
-              ]
-            );
-          }
-        },
-        {
-          title: "创建时间",
+          title: "更新时间",
           key: "add_time",
-          sortable: true,
-          render: (h, params) => {
-            return h("div",util.formatDate(this.tableData[params.index].add_time)
-            );
-          }
+          sortable: true
         },
         {
-        title: '操作',
-        key: 'action',
-        width: 150,
-        align: 'center',
-        render: (h, params) => {
-            return h('div', [
-                h('Button', {
-                    props: {
-                        type: 'primary',
-                        size: 'small'
-                    },
-                    style: {
-                        marginRight: '5px'
-                    },
-                    on: {
-                        click: () => {
-                            this.show(params.index)
-                        }
-                    }
-                }, '查看'),
-                h('Button', {
-                    props: {
-                        type: 'error',
-                        size: 'small'
-                    },
-                    on: {
-                        click: () => {
-                            this.remove(params.index)
-                        }
-                    }
-                }, '删除')
-            ]);
+          title: "操作",
+          align: "center",
+          width: 190,
+          key: "handle",
+          handle: ["edit", "delete"]
         }
-        }
+      ],
+      tableData: [],
+      initTable: [],
+      dataCount: 0,
+      pageSize: 10,
+      currentPage: 1,
+      groupList: [],
+      loading: true,
+      apiParams: {
+        cmdId: "",
+        gameId: localStorage.gameId
+      },
+      pageNum: "",
+      pageNumList: [
+        { value: "10" },
+        { value: "20" },
+        { value: "50" },
+        { value: "100" },
+        { value: "all" }
       ]
     };
   },
   methods: {
     // 初始化数据
-    init(params) {
-      this.mockTableData(params);
+    init() {
+      this.apiParams.cmdId = "list";
+      this.mockTableData();
+    },
+    // 分页数据(ajax异步获取，一次性获取完毕)
+    mockTableData() {
+      let ajaxData = [];
+      let groupData = [];
+      util
+        .ajaxPost(this.apiName, this.apiParams)
+        .then(
+          function(response) {
+            // 遍历结果数据
+            if (response.data.data.length > 0) {
+              response.data.data.forEach(function(item) {
+                ajaxData.push(item);
+              });
+            }
+            console.log(response.data);
+            if (response.data.group_list.length > 0) {
+              response.data.group_list.forEach(function(g) {
+                console.log(g);
+                groupData.push(g);
+              });
+            }
+            console.log(groupData);
+            // 赋值给当前的表格
+            this.tableData = this.initTable = ajaxData;
+            this.groupList = groupData;
+            // 数据总数
+            this.dataCount = response.data.data.length;
+            // 是否需要对初始数据分页
+            if (this.dataCount > this.pageSize) {
+              this.tableData = this.initTable.slice(0, this.pageSize);
+            }
+            // 加载效果重置
+            this.loading = false;
+          }.bind(this)
+        )
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 改变分页
+    changePage(index) {
+      var _start = (index - 1) * this.pageSize;
+      var _end = index * this.pageSize;
+      this.tableData = this.initTable.slice(_start, _end);
+      this.currentPage = index;
+      console.log("changePage");
+      console.log(
+        this.pageSize + " " + this.dataCount + " " + this.currentPage
+      );
+    },
+    // 改变每页数量
+    changePageNum() {
+      this.pageSize = parseInt(this.pageNum);
+      this.pageSize = this.pageSize > 0 ? this.pageSize : this.dataCount;
+      this.tableData = this.initTable.slice(0, this.pageSize);
+      this.currentPage = 1;
+      console.log("changePageNum");
+      console.log(
+        this.pageSize + " " + this.dataCount + " " + this.currentPage
+      );
+    },
+    // 搜索条件
+    handleSearch() {
+      this.tableData = this.initTable;
+      let res = this.tableData;
+      let dataClone = this.tableData;
+      res = dataClone.filter(item => {
+        return this.search(item, this.searchCon);
+      });
+      this.tableData = res;
+      this.dataCount = res.length;
+      this.currentPage = 1;
     },
     // 搜索结果
     search(item, queryCon) {
@@ -315,144 +330,100 @@ export default {
         let val = String(item[argu]);
         val = val.toLowerCase();
         if (val.length > 0 && val.indexOf(queryCon) > -1) {
-            return true;
+          return true;
         }
       }
       return false;
     },
-    // 搜索条件
-    handleSearch() {
-      this.tableData = this.initTable;
-      let res = this.tableData;
-      let dataClone = this.tableData;
-      res = dataClone.filter(item => {
-          return this.search(item,this.searchCon);
-      });
-      this.tableData = res;
-      this.dataCount = res.length;
-      this.currentPage = 1;
-    },
-    // 分页数据(ajax异步获取，一次性获取完毕)
-    mockTableData(params) {
-      let ajaxData = [];
-      util.ajaxPost("user", params)
+    // 删除一条
+    handleDel(val, index) {
+      let currentRowData = this.initTable[index];
+      this.apiParams.cmdId = "delete";
+      this.apiParams.postData = currentRowData;
+      // 远程调用ajax执行删除
+      util
+        .ajaxPost(this.apiName, this.apiParams)
         .then(
           function(response) {
             // 遍历结果数据
-            if(response.data.data.length > 0){
-              response.data.data.forEach(function(item) {
-                ajaxData.push({
-                  name: item.name + Math.floor(Math.random() * 7 + 1),
-                  site: item.site,
-                  api_url: item.api_url,
-                  status: Math.floor(Math.random() * 3 + 1),
-                  portrayal: ["City", "People", "Cost", "Life", "Entertainment"],
-                  people: [{}],
-                  add_time: new Date()
-                });
-              });
+            if (response.data.result != 0) {
+              this.init();
+              this.$Message.success("删除了第" + (index + 1) + "行数据");
             }
-            // 赋值给当前的表格
-            this.tableData = this.initTable = ajaxData;
-            // 数据总数
-            this.dataCount = response.data.data.length;
-            // 是否需要对初始数据分页
-            if(this.dataCount > this.pageSize){
-                this.tableData = this.initTable.slice(0,this.pageSize);
-            }
-            // 加载效果重置
-            this.loading = false;
-
           }.bind(this)
         )
         .catch(function(error) {
           console.log(error);
         });
     },
-    // 改变分页
-    changePage(index) {
-      var _start = ( index - 1 ) * this.pageSize;
-      var _end = index * this.pageSize;
-      // console.log(_start + ' ' + _end);
-      // console.log(this.initTable.slice(_start,_end));
-      this.tableData = this.initTable.slice(_start,_end);
-      this.currentPage = index;
-      console.log('changePage');
-      console.log(this.pageSize + ' ' + this.dataCount + ' ' + this.currentPage);
-    },
-    changePageNum(){
-      this.pageSize = parseInt(this.pageNum);
-      this.pageSize = this.pageSize > 0 ? this.pageSize : this.dataCount;
-      this.tableData = this.initTable.slice(0,this.pageSize);
-      this.currentPage = 1;
-      console.log('changePageNum');
-      console.log(this.pageSize + ' ' + this.dataCount + ' ' + this.currentPage);
-    },
-    // 显示详细信息
-    show (index) {
-      this.$Modal.info({
-        title: '详细信息',
-            content: `Name：${this.tableData[index].name}<br>Site：${this.tableData[index].site}<br>Status：${this.tableData[index].status}`
-          })
-      },
-    // 删除
-    remove (index) {
-      this.tableData.splice(index, 1);
-    },
-    // 导出
-    exportData (type) {
-            if (type === 1) {
-                this.$refs.gameTable.exportCsv({
-                    filename: this.name
-                });
-            } else if (type === 2) {
-                this.$refs.gameTable.exportCsv({
-                    filename: this.name,
-                    original: false
-                });
+    // 修改
+    handleChange(val, index) {
+      let currentRowData = this.tableData[index];
+      console.log(currentRowData);
+      this.apiParams.cmdId = "update";
+      this.apiParams.postData = currentRowData;
+      // 远程调用ajax执行删除
+      util
+        .ajaxPost(this.apiName, this.apiParams)
+        .then(
+          function(response) {
+            // 遍历结果数据
+            if (response.data.result != 0) {
+              this.init();
+              this.$Message.success("修改了第" + (index + 1) + "行数据");
             }
+          }.bind(this)
+        )
+        .catch(function(error) {
+          console.log(error);
+        });
     },
-    addNew () {
-        // console.log(this.$refs);
-        let formItem = this.formItem;
-        console.log(this.formItem);
-        // 执行异步
-          setTimeout(() => {
-              this.popModal = false;
-              this.$Message.success('添加成功');
-          }, 2000);
+    // 增加
+    handleSubmit(formName) {
+      // 验证表单
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.loadResult = true;
+          this.apiParams.cmdId = "add";
+          this.apiParams.postData = this.formItem;
+          util
+            .ajaxPost(this.apiName, this.apiParams)
+            .then(
+              function(response) {
+                // 遍历结果数据
+                if (response.data.result != 0) {
+                  // 关闭模态框
+                  this.popModal = false;
+                  // 加载最新的表数据
+                  this.init();
+                  this.$Message.success("添加成功");
+                }
+              }.bind(this)
+            )
+            .catch(function(error) {
+              console.log(error);
+            });
+        } else {
+          this.$Message.error("数据输入异常，请检查！");
+        }
+      });
     },
-    handleCancel () {
-          this.popModal = false;
-          this.$Message.error('取消成功');
+    // 取消
+    handleCancel() {
+      this.loadResult = false;
+      this.popModal = false;
+      // this.$Message.error("取消成功");
     },
-    handleReset (formName) {
+    // 重置
+    handleReset(formName) {
       console.log(this.$refs[formName]);
       this.$refs[formName].resetFields();
-      this.$Message.error('重置成功');
-    },
-    handleSubmit (formName) {
-      console.log(formName);
-        this.$refs[formName].validate((valid) => {
-            let formItem = this.formData;
-            console.log(formItem);
-            if (valid) {
-                this.$Message.success('验证成功');
-            } else {
-                this.$Message.error('数据输入异常，请检查！');
-            }
-        })
-    },
+      this.$Message.error("重置成功");
+    }
   },
   mounted() {
-    
-    let params = {
-      cmdId: "getGameList", //获取游戏列表操作
-      gameId: localStorage.gameId
-    };
-
-    this.init(params);
+    // 初始化
+    this.init();
   }
 };
-
 </script>

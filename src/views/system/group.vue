@@ -33,8 +33,8 @@
                                   <FormItem label="部门名称" prop="name">
                                       <Input v-model="formItem.name" placeholder="部门名称"></Input>
                                   </FormItem>
-                                  <FormItem label="权限值" prop="access_code">
-                                      <Select v-model="formItem.access_code">
+                                  <FormItem label="权限值" prop="access">
+                                      <Select v-model="formItem.access">
                                           <Option value="1">一级权限</Option>
                                           <Option value="2">二级权限</Option>
                                           <Option value="3">三级权限</Option>
@@ -78,9 +78,10 @@ export default {
     return {
       popModal: false,
       loadResult: false,
+      searchCon: "",
       formItem: {
         name: "",
-        access_code: "",
+        access: "",
         description: ""
       },
       ruleValidate: {
@@ -98,7 +99,7 @@ export default {
             trigger: "blur"
           }
         ],
-        access_code: [
+        access: [
           {
             required: true,
             message: "Please select the access",
@@ -184,14 +185,7 @@ export default {
             // 遍历结果数据
             if (response.data.data.length > 0) {
               response.data.data.forEach(function(item) {
-                ajaxData.push({
-                  id: item.id,
-                  name: item.name,
-                  description: item.description,
-                  access_code: item.access_code,
-                  user_num: item.user_num,
-                  add_time: item.add_time
-                });
+                ajaxData.push(item);
               });
             }
             // 赋值给当前的表格
@@ -269,7 +263,7 @@ export default {
         .then(
           function(response) {
             // 遍历结果数据
-            if (response.data.result == 0) {
+            if (response.data.result != 0) {
               this.init();
               this.$Message.success("删除了第" + (index + 1) + "行数据");
             }
@@ -291,7 +285,7 @@ export default {
         .then(
           function(response) {
             // 遍历结果数据
-            if (response.data.result == 0) {
+            if (response.data.result != 0) {
               this.init();
               this.$Message.success("修改了第" + (index + 1) + "行数据");
             }
@@ -314,7 +308,7 @@ export default {
             .then(
               function(response) {
                 // 遍历结果数据
-                if (response.data.result == 0) {
+                if (response.data.result != 0) {
                   // 关闭模态框
                   this.popModal = false;
                   // 加载最新的表数据

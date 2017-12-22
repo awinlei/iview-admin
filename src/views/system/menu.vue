@@ -4,8 +4,8 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="ios-game-controller-b"></Icon>
-                        菜单列表[本地分页]
+                        <Icon type="person-add"></Icon>
+                        菜单列表
                     </p>
                     <Row>
                         <Select v-model="pageNum" icon="search" placeholder="请选择数量"  @on-change="changePageNum" style="width:120px;float:left;">
@@ -14,75 +14,55 @@
                         </Select>
                         <Input v-model="searchCon" @on-change="handleSearch" icon="search" placeholder="请输入关键字搜搜..." style="width: 200px;float: right;" />
                     </Row>
-                    <Row class="margin-top-10 searchable-table-con">
-                        <Table border ref="gameTable" :loading="loading" :columns="tableColumns" :data="tableData"></Table>
-                        <div style="margin: 10px;overflow: hidden">
+                    <Row class="margin-top-10">
+                        <can-edit-table refs="tableInfo" v-model="tableData" :columns-list="tableColumns" @on-delete="handleDel" @on-change="handleChange"></can-edit-table>
+                        <div style="margin-top: 10px;margin-right: 10px;overflow: hidden">
                         <span style="margin-right: 16px;">
-                          <Button type="primary" size="large" @click="exportData(1)"><Icon type="ios-download-outline"></Icon> 下载</Button>
-                          <Button type="success" size="large" @click="popModal = true">添加</Button>
-                          <!-- 模态框添加窗口 -->
+                          <Button type="success" size="large" @click="popModal = true" icon="android-add">添加</Button>
+                           <!-- 模态框添加窗口 -->
                           <Modal
                               v-model="popModal"
-                              title="添加游戏"
+                              title="添加"
                               :closable="false"
                               :styles="{top: '20px'}"
-                              @on-ok="addNew"
-                              @on-cancel="cancelAdd">
+                              @on-ok="handleSubmit('formGroup')"
+                              @on-cancel="handleCancel">
                               <Row type="flex" justify="center">
-                               <Form :model="formItem" :label-width="80" ref="gameForm">
-                                  <FormItem label="Input" prop="input">
-                                      <Input v-model="formItem.input" placeholder="Enter something..."></Input>
+                               <Form ref="formGroup" :model="formItem" :label-width="80" :rules="ruleValidate">
+                                   <FormItem label="菜单名称" prop="name">
+                                      <Input v-model="formItem.name" placeholder="Enter your name"></Input>
                                   </FormItem>
-                                  <FormItem label="Select">
-                                      <Select v-model="formItem.select">
-                                          <Option value="beijing">New York</Option>
-                                          <Option value="shanghai">London</Option>
-                                          <Option value="shenzhen">Sydney</Option>
+                                  <FormItem label="菜单ICON" prop="icon">
+                                      <Input v-model="formItem.icon" placeholder="Enter your icon"></Input>
+                                  </FormItem>
+                                  <FormItem label="菜单说明" prop="title">
+                                      <Input v-model="formItem.title" placeholder="Enter your title"></Input>
+                                  </FormItem>
+                                  <FormItem label="所属组件" prop="component">
+                                      <Select v-model="formItem.component" placeholder="选择组件">
+                                          <Option value="Main">主模块</Option>
+                                          <Option value="Children">子模块</Option>
                                       </Select>
                                   </FormItem>
-                                  <FormItem label="DatePicker">
-                                      <Row>
-                                          <Col span="11">
-                                              <DatePicker type="date" placeholder="Select date" v-model="formItem.date"></DatePicker>
-                                          </Col>
-                                          <Col span="2" style="text-align: center">-</Col>
-                                          <Col span="11">
-                                              <TimePicker type="time" placeholder="Select time" v-model="formItem.time"></TimePicker>
-                                          </Col>
-                                      </Row>
-                                  </FormItem>
-                                  <FormItem label="Radio">
-                                      <RadioGroup v-model="formItem.radio">
-                                          <Radio label="male">Male</Radio>
-                                          <Radio label="female">Female</Radio>
+                                  <FormItem label="菜单类型" prop="type">
+                                      <RadioGroup v-model="formItem.type">
+                                          <Radio label="group">组合</Radio>
+                                          <Radio label="single">独立</Radio>
                                       </RadioGroup>
                                   </FormItem>
-                                  <FormItem label="Checkbox">
-                                      <CheckboxGroup v-model="formItem.checkbox">
-                                          <Checkbox label="Eat"></Checkbox>
-                                          <Checkbox label="Sleep"></Checkbox>
-                                          <Checkbox label="Run"></Checkbox>
-                                          <Checkbox label="Movie"></Checkbox>
-                                      </CheckboxGroup>
-                                  </FormItem>
-                                  <FormItem label="Switch">
-                                      <i-switch v-model="formItem.switch" size="large">
-                                          <span slot="open">On</span>
-                                          <span slot="close">Off</span>
-                                      </i-switch>
-                                  </FormItem>
-                                  <FormItem label="Slider">
-                                      <Slider v-model="formItem.slider" range></Slider>
-                                  </FormItem>
-                                  <FormItem label="Text">
-                                      <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+                                  <FormItem label="菜单权限" prop="access">
+                                     <Select v-model="formItem.access" placeholder="选择权限">
+                                          <Option value="1">一级权限</Option>
+                                          <Option value="2">二级权限</Option>
+                                          <Option value="3">三级权限</Option>
+                                      </Select>
                                   </FormItem>
                               </Form>
                               </Row>
                               <div slot="footer">
-                                  <Button type="text" @click="cancelAdd">Cancel</Button>
-                                  <Button type="ghost"  @click="handleReset('gameForm')" style="margin-left: 8px">Reset</Button>
-                                  <Button type="primary" :loading="loadResult" @click="addNew">Submit</Button>
+                                  <Button type="text" @click="handleCancel">取消</Button>
+                                  <Button type="ghost"  @click="handleReset('formGroup')" style="margin-left: 8px">重置</Button>
+                                  <Button type="primary" :loading="loadResult" @click="handleSubmit('formGroup')">提交</Button>
                               </div>
                           </Modal>
                           <!-- 模态框添加窗口 -->
@@ -91,7 +71,7 @@
                             <Page :total="dataCount" :page-size="pageSize" :current="currentPage" show-total @on-change="changePage"></Page>
                         </div>
                     </div>
-                    </Row>
+                  </Row>
                 </Card>
             </Col>
         </Row>
@@ -99,214 +79,202 @@
 </template>
 
 <script>
-import util from '@/libs/util';
+import expandRow from "../my-components/table-show/expandSpan.vue";
+import canEditTable from "../my-components/table-show/canEditTable.vue";
+
+import util from "@/libs/util";
 
 export default {
-  name: "game",
+  name: "menu",
+  components: { expandRow, canEditTable },
   data() {
     return {
+      apiName: "menu",
       popModal: false,
       loadResult: false,
-      formItem: {
-                    input: '',
-                    select: '',
-                    radio: 'male',
-                    checkbox: [],
-                    switch: true,
-                    date: '',
-                    time: '',
-                    slider: [0, 50],
-                    textarea: ''
-                },
       searchCon: "",
-      initTable: [],
-      tableData: [],
-      dataCount: 0,
-      pageSize:  10,
-      currentPage: 1,
-      loading:  true,
-      pageNum:  '',
-      pageNumList: [
-          {value: '10'},
-          {value: '20'},
-          {value: '50'},
-          {value: '100'},
-          {value: 'all'},
-      ],
+      formItem: {
+        name: "",
+        icon: "",
+        title: "",
+        component: "",
+        type: "",
+        access: ""
+      },
+      ruleValidate: {
+        name: [
+          {
+            required: true,
+            message: "The name cannot be empty",
+            trigger: "blur"
+          }
+        ],
+        icon: [
+          {
+            required: true,
+            message: "Mailbox cannot be empty",
+            trigger: "blur"
+          }
+        ],
+        title: [
+          {
+            required: true,
+            message: "Please select the title",
+            trigger: "change"
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: "Please select the type",
+            trigger: "change"
+          }
+        ],
+        component: [
+          {
+            required: true,
+            message: "The component cannot be empty",
+            trigger: "blur"
+          }
+        ]
+      },
       tableColumns: [
         {
-          title: "游戏名称",
-          key: "name"
-        },
-        {
-          title: "游戏主页",
-          key: "site"
-        },
-        {
-          title: "游戏接口",
-          key: "api_url"
-        },
-        {
-          title: "状态",
-          key: "status",
-          sortable: true,
+          type: "expand",
+          width: 50,
           render: (h, params) => {
-            const row = params.row;
-            const color = row.status === 1 ? "blue" : row.status === 2 ? "green" : "red";
-            const text =  row.status === 1 ? "测试" : row.status === 2 ? "上线" : "下线";
-            return h(
-              "Tag",
-              {
-                props: {
-                  type: "dot",
-                  color: color
-                }
-              },
-              text
-            );
+            return h(expandRow, {
+              props: {
+                row: params.row
+              }
+            });
           }
         },
         {
-          title: "描述",
-          key: "portrayal",
-          render: (h, params) => {
-            return h(
-              "Poptip",
-              {
-                props: {
-                  trigger: "hover",
-                  title: params.row.portrayal.length + "portrayals",
-                  placement: "bottom"
-                }
-              },
-              [
-                h("Tag", params.row.portrayal.length),
-                h(
-                  "div",
-                  {
-                    slot: "content"
-                  },
-                  [
-                    h(
-                      "ul",
-                      this.tableData[params.index].portrayal.map(item => {
-                        return h(
-                          "li",
-                          {
-                            style: {
-                              textAlign: "center",
-                              padding: "4px"
-                            }
-                          },
-                          item
-                        );
-                      })
-                    )
-                  ]
-                )
-              ]
-            );
-          }
+          title: "菜单ID",
+          key: "id",
+          sortable: true
         },
         {
-          title: "在线玩家",
-          key: "people",
-          render: (h, params) => {
-            return h(
-              "Poptip",
-              {
-                props: {
-                  trigger: "hover",
-                  title: params.row.people.length + "customers",
-                  placement: "bottom"
-                }
-              },
-              [
-                h("Tag", params.row.people.length),
-                h(
-                  "div",
-                  {
-                    slot: "content"
-                  },
-                  [
-                    h(
-                      "ul",
-                      this.tableData[params.index].people.map(item => {
-                        return h(
-                          "li",
-                          {
-                            style: {
-                              textAlign: "center",
-                              padding: "4px"
-                            }
-                          },
-                          item.n + "：" + item.c + "People"
-                        );
-                      })
-                    )
-                  ]
-                )
-              ]
-            );
-          }
+          title: "菜单名称",
+          key: "name",
+          sortable: true
         },
         {
-          title: "运行时间",
-          key: "time",
-          render: (h, params) => {
-            return h("div", "大约 " + params.row.time + " 天");
-          }
+          title: "菜单图标",
+          key: "icon",
+          editable: true,
+          sortable: true
         },
         {
-          title: "开服时间",
-          key: "update",
-          render: (h, params) => {
-            return h("div",util.formatDate(this.tableData[params.index].update)
-            );
-          }
+          title: "菜单说明",
+          key: "title",
+          editable: true,
+          sortable: true
         },
         {
-        title: '操作',
-        key: 'action',
-        width: 150,
-        align: 'center',
-        render: (h, params) => {
-            return h('div', [
-                h('Button', {
-                    props: {
-                        type: 'primary',
-                        size: 'small'
-                    },
-                    style: {
-                        marginRight: '5px'
-                    },
-                    on: {
-                        click: () => {
-                            this.show(params.index)
-                        }
-                    }
-                }, '查看'),
-                h('Button', {
-                    props: {
-                        type: 'error',
-                        size: 'small'
-                    },
-                    on: {
-                        click: () => {
-                            this.remove(params.index)
-                        }
-                    }
-                }, '删除')
-            ]);
+          title: "更新时间",
+          key: "add_time",
+          sortable: true
+        },
+        {
+          title: "操作",
+          align: "center",
+          width: 190,
+          key: "handle",
+          handle: ["edit", "delete"]
         }
-        }
+      ],
+      tableData: [],
+      initTable: [],
+      dataCount: 0,
+      pageSize: 10,
+      currentPage: 1,
+      loading: true,
+      apiParams: {
+        cmdId: "",
+        gameId: localStorage.gameId
+      },
+      pageNum: "",
+      pageNumList: [
+        { value: "10" },
+        { value: "20" },
+        { value: "50" },
+        { value: "100" },
+        { value: "all" }
       ]
     };
   },
   methods: {
     // 初始化数据
-    init(params) {
-      this.mockTableData(params);
+    init() {
+      this.apiParams.cmdId = "list";
+      this.mockTableData();
+    },
+    // 分页数据(ajax异步获取，一次性获取完毕)
+    mockTableData() {
+      let ajaxData = [];
+      let groupData = [];
+      util
+        .ajaxPost(this.apiName, this.apiParams)
+        .then(
+          function(response) {
+            // 遍历结果数据
+            if (response.data.data.length > 0) {
+              response.data.data.forEach(function(item) {
+                ajaxData.push(item);
+              });
+            }
+            console.log(response.data);
+            // 赋值给当前的表格
+            this.tableData = this.initTable = ajaxData;
+            // 数据总数
+            this.dataCount = response.data.data.length;
+            // 是否需要对初始数据分页
+            if (this.dataCount > this.pageSize) {
+              this.tableData = this.initTable.slice(0, this.pageSize);
+            }
+            // 加载效果重置
+            this.loading = false;
+          }.bind(this)
+        )
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 改变分页
+    changePage(index) {
+      var _start = (index - 1) * this.pageSize;
+      var _end = index * this.pageSize;
+      this.tableData = this.initTable.slice(_start, _end);
+      this.currentPage = index;
+      console.log("changePage");
+      console.log(
+        this.pageSize + " " + this.dataCount + " " + this.currentPage
+      );
+    },
+    // 改变每页数量
+    changePageNum() {
+      this.pageSize = parseInt(this.pageNum);
+      this.pageSize = this.pageSize > 0 ? this.pageSize : this.dataCount;
+      this.tableData = this.initTable.slice(0, this.pageSize);
+      this.currentPage = 1;
+      console.log("changePageNum");
+      console.log(
+        this.pageSize + " " + this.dataCount + " " + this.currentPage
+      );
+    },
+    // 搜索条件
+    handleSearch() {
+      this.tableData = this.initTable;
+      let res = this.tableData;
+      let dataClone = this.tableData;
+      res = dataClone.filter(item => {
+        return this.search(item, this.searchCon);
+      });
+      this.tableData = res;
+      this.dataCount = res.length;
+      this.currentPage = 1;
     },
     // 搜索结果
     search(item, queryCon) {
@@ -317,136 +285,100 @@ export default {
         let val = String(item[argu]);
         val = val.toLowerCase();
         if (val.length > 0 && val.indexOf(queryCon) > -1) {
-            return true;
+          return true;
         }
       }
       return false;
     },
-    // 搜索条件
-    handleSearch() {
-      this.tableData = this.initTable;
-      let res = this.tableData;
-      let dataClone = this.tableData;
-      res = dataClone.filter(item => {
-          return this.search(item,this.searchCon);
-      });
-      this.tableData = res;
-      this.dataCount = res.length;
-      this.currentPage = 1;
-    },
-    // 分页数据(ajax异步获取，一次性获取完毕)
-    mockTableData(params) {
-      let ajaxData = [];
-      util.ajaxPost("menu", params)
+    // 删除一条
+    handleDel(val, index) {
+      let currentRowData = this.initTable[index];
+      this.apiParams.cmdId = "delete";
+      this.apiParams.postData = currentRowData;
+      // 远程调用ajax执行删除
+      util
+        .ajaxPost(this.apiName, this.apiParams)
         .then(
           function(response) {
             // 遍历结果数据
-            if(response.data.data.length > 0){
-              response.data.data.forEach(function(item) {
-                ajaxData.push({
-                  name: item.name + Math.floor(Math.random() * 7 + 1),
-                  site: item.site,
-                  api_url: item.api_url,
-                  status: Math.floor(Math.random() * 3 + 1),
-                  portrayal: ["City", "People", "Cost", "Life", "Entertainment"],
-                  people: [{}],
-                  time: Math.floor(Math.random() * 7 + 1),
-                  update: new Date()
-                });
-              });
+            if (response.data.result != 0) {
+              this.init();
+              this.$Message.success("删除了第" + (index + 1) + "行数据");
             }
-            // 赋值给当前的表格
-            this.tableData = this.initTable = ajaxData;
-            // 数据总数
-            this.dataCount = response.data.data.length;
-            // 是否需要对初始数据分页
-            if(this.dataCount > this.pageSize){
-                this.tableData = this.initTable.slice(0,this.pageSize);
-            }
-            // 加载效果重置
-            this.loading = false;
-
           }.bind(this)
         )
         .catch(function(error) {
           console.log(error);
         });
     },
-    // 改变分页
-    changePage(index) {
-      var _start = ( index - 1 ) * this.pageSize;
-      var _end = index * this.pageSize;
-      // console.log(_start + ' ' + _end);
-      // console.log(this.initTable.slice(_start,_end));
-      this.tableData = this.initTable.slice(_start,_end);
-      this.currentPage = index;
-      console.log('changePage');
-      console.log(this.pageSize + ' ' + this.dataCount + ' ' + this.currentPage);
-    },
-    changePageNum(){
-      this.pageSize = parseInt(this.pageNum);
-      this.pageSize = this.pageSize > 0 ? this.pageSize : this.dataCount;
-      this.tableData = this.initTable.slice(0,this.pageSize);
-      this.currentPage = 1;
-      console.log('changePageNum');
-      console.log(this.pageSize + ' ' + this.dataCount + ' ' + this.currentPage);
-    },
-    // 显示详细信息
-    show (index) {
-      this.$Modal.info({
-        title: '详细信息',
-            content: `Name：${this.tableData[index].name}<br>Site：${this.tableData[index].site}<br>Status：${this.tableData[index].status}`
-          })
-      },
-    // 删除
-    remove (index) {
-      this.tableData.splice(index, 1);
-    },
-    // 导出
-    exportData (type) {
-            if (type === 1) {
-                this.$refs.gameTable.exportCsv({
-                    filename: this.name
-                });
-            } else if (type === 2) {
-                this.$refs.gameTable.exportCsv({
-                    filename: this.name,
-                    original: false
-                });
+    // 修改
+    handleChange(val, index) {
+      let currentRowData = this.tableData[index];
+      console.log(currentRowData);
+      this.apiParams.cmdId = "update";
+      this.apiParams.postData = currentRowData;
+      // 远程调用ajax执行删除
+      util
+        .ajaxPost(this.apiName, this.apiParams)
+        .then(
+          function(response) {
+            // 遍历结果数据
+            if (response.data.result != 0) {
+              this.init();
+              this.$Message.success("修改了第" + (index + 1) + "行数据");
             }
+          }.bind(this)
+        )
+        .catch(function(error) {
+          console.log(error);
+        });
     },
-    addNew () {
-        // console.log(this.$refs);
-        this.loadResult = true;
-        let formItem = this.formItem;
-        console.log(this.formItem);
-        // 执行异步
-          setTimeout(() => {
-            this.popModal = false;
-              this.$Message.success('添加成功');
-          }, 2000);
+    // 增加
+    handleSubmit(formName) {
+      // 验证表单
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.loadResult = true;
+          this.apiParams.cmdId = "add";
+          this.apiParams.postData = this.formItem;
+          util
+            .ajaxPost(this.apiName, this.apiParams)
+            .then(
+              function(response) {
+                // 遍历结果数据
+                if (response.data.result != 0) {
+                  // 关闭模态框
+                  this.popModal = false;
+                  // 加载最新的表数据
+                  this.init();
+                  this.$Message.success("添加成功");
+                }
+              }.bind(this)
+            )
+            .catch(function(error) {
+              console.log(error);
+            });
+        } else {
+          this.$Message.error("数据输入异常，请检查！");
+        }
+      });
     },
-    cancelAdd () {
+    // 取消
+    handleCancel() {
       this.loadResult = false;
       this.popModal = false;
-      this.$Message.error('取消成功');
+      // this.$Message.error("取消成功");
     },
-    handleReset (formName) {
-      this.loadResult = false;
+    // 重置
+    handleReset(formName) {
       console.log(this.$refs[formName]);
       this.$refs[formName].resetFields();
-      this.$Message.error('重置成功');
-    },
+      this.$Message.error("重置成功");
+    }
   },
   mounted() {
-
-    let params = {
-      cmdId: "getGameList", //获取游戏列表操作
-      gameId: localStorage.gameId
-    };
-
-    this.init(params);
+    // 初始化
+    this.init();
   }
 };
-
 </script>
