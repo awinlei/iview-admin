@@ -1,26 +1,61 @@
-// expand-row.vue
-<style scoped>
-.expand-col {
-  margin-bottom: 12px;
-}
-</style>
 <template>
-    <div>
-        <Row class="expand-row">
-             <Col span="4" v-for="(value,key,index) in row" class="expand-col">
-                <span class="expand-key">{{ key }}： </span>
-                <span class="expand-value">{{ value }}</span>
-            </Col>
-        </Row>
-    </div>
+    <Table :columns="expandCol" :data="expandData"></Table>
 </template>
 <script>
 export default {
+  data() {
+    return {
+      expandCol: [
+        {
+          title: "Name",
+          key: "name"
+        },
+        {
+          title: "Age",
+          key: "age"
+        },
+        {
+          title: "Address",
+          key: "address"
+        }
+      ],
+      expandData: [
+        {
+          name: "John Brown",
+          age: 18,
+          address: "New York No. 1 Lake Park",
+          date: "2016-10-03"
+        },
+        {
+          name: "Jim Green",
+          age: 24,
+          address: "London No. 1 Lake Park",
+          date: "2016-10-01"
+        },
+        {
+          name: "Joe Black",
+          age: 30,
+          address: "Sydney No. 1 Lake Park",
+          date: "2016-10-02"
+        },
+        {
+          name: "Jon Snow",
+          age: 26,
+          address: "Ottawa No. 2 Lake Park",
+          date: "2016-10-04"
+        }
+      ]
+    };
+  },
   props: {
+    col: Object,
     row: Object
-  },mounted(){
-      console.log("expand table");
-      console.log(this.row);
+  },
+  mounted() {
+    console.log("expand table");
+    this.expandCol = Object.values((this.col));
+    console.log(Object.values((this.col)));
+    console.log(this.row);
   }
 };
 </script>

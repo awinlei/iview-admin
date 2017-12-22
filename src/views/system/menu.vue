@@ -4,8 +4,8 @@
             <Col span="24">
                 <Card>
                     <p slot="title">
-                        <Icon type="person-add"></Icon>
-                        用户列表[本地分页]
+                        <Icon type="ios-game-controller-b"></Icon>
+                        菜单列表[本地分页]
                     </p>
                     <Row>
                         <Select v-model="pageNum" icon="search" placeholder="请选择数量"  @on-change="changePageNum" style="width:120px;float:left;">
@@ -18,56 +18,71 @@
                         <Table border ref="gameTable" :loading="loading" :columns="tableColumns" :data="tableData"></Table>
                         <div style="margin: 10px;overflow: hidden">
                         <span style="margin-right: 16px;">
-                          <Button type="success" size="large" @click="popModal = true" icon="android-add">添加</Button>
+                          <Button type="primary" size="large" @click="exportData(1)"><Icon type="ios-download-outline"></Icon> 下载</Button>
+                          <Button type="success" size="large" @click="popModal = true">添加</Button>
                           <!-- 模态框添加窗口 -->
                           <Modal
                               v-model="popModal"
-                              title="添加用户"
-                              :loading="loadResult"
+                              title="添加游戏"
                               :closable="false"
                               :styles="{top: '20px'}"
-                              @on-ok="handleSubmit('formData')"
-                              @on-cancel="handleCancel">
+                              @on-ok="addNew"
+                              @on-cancel="cancelAdd">
                               <Row type="flex" justify="center">
-                              <Form ref="formData" :model="formData" :rules="ruleValidate" :label-width="80">
-                                  <FormItem label="账号" prop="name">
-                                      <Input v-model="formData.name" placeholder="Enter your name"></Input>
+                               <Form :model="formItem" :label-width="80" ref="gameForm">
+                                  <FormItem label="Input" prop="input">
+                                      <Input v-model="formItem.input" placeholder="Enter something..."></Input>
                                   </FormItem>
-                                  <FormItem label="真实姓名" prop="realname">
-                                      <Input v-model="formData.realname" placeholder="Enter your realname"></Input>
-                                  </FormItem>
-                                  <FormItem label="邮件" prop="mail">
-                                      <Input v-model="formData.mail" placeholder="Enter your e-mail"></Input>
-                                  </FormItem>
-                                  <FormItem label="手机" prop="mobile">
-                                      <Input v-model="formData.mobile" placeholder="Enter your mobilephone"></Input>
-                                  </FormItem>
-                                  <FormItem label="渠道" prop="channel">
-                                      <Select v-model="formData.channel" placeholder="选择渠道">
-                                          <Option value="beijing">游族</Option>
-                                          <Option value="shanghai">腾讯</Option>
-                                          <Option value="shenzhen">小米</Option>
+                                  <FormItem label="Select">
+                                      <Select v-model="formItem.select">
+                                          <Option value="beijing">New York</Option>
+                                          <Option value="shanghai">London</Option>
+                                          <Option value="shenzhen">Sydney</Option>
                                       </Select>
                                   </FormItem>
-                                  <FormItem label="状态" prop="status">
-                                      <RadioGroup v-model="formData.status">
-                                          <Radio label="male">激活</Radio>
-                                          <Radio label="female">未激活</Radio>
+                                  <FormItem label="DatePicker">
+                                      <Row>
+                                          <Col span="11">
+                                              <DatePicker type="date" placeholder="Select date" v-model="formItem.date"></DatePicker>
+                                          </Col>
+                                          <Col span="2" style="text-align: center">-</Col>
+                                          <Col span="11">
+                                              <TimePicker type="time" placeholder="Select time" v-model="formItem.time"></TimePicker>
+                                          </Col>
+                                      </Row>
+                                  </FormItem>
+                                  <FormItem label="Radio">
+                                      <RadioGroup v-model="formItem.radio">
+                                          <Radio label="male">Male</Radio>
+                                          <Radio label="female">Female</Radio>
                                       </RadioGroup>
                                   </FormItem>
-                                  <FormItem label="部门" prop="department">
-                                      <CheckboxGroup v-model="formData.department">
-                                          <Checkbox label="运维"></Checkbox>
-                                          <Checkbox label="运营"></Checkbox>
-                                          <Checkbox label="研发"></Checkbox>
+                                  <FormItem label="Checkbox">
+                                      <CheckboxGroup v-model="formItem.checkbox">
+                                          <Checkbox label="Eat"></Checkbox>
+                                          <Checkbox label="Sleep"></Checkbox>
+                                          <Checkbox label="Run"></Checkbox>
+                                          <Checkbox label="Movie"></Checkbox>
                                       </CheckboxGroup>
+                                  </FormItem>
+                                  <FormItem label="Switch">
+                                      <i-switch v-model="formItem.switch" size="large">
+                                          <span slot="open">On</span>
+                                          <span slot="close">Off</span>
+                                      </i-switch>
+                                  </FormItem>
+                                  <FormItem label="Slider">
+                                      <Slider v-model="formItem.slider" range></Slider>
+                                  </FormItem>
+                                  <FormItem label="Text">
+                                      <Input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
                                   </FormItem>
                               </Form>
                               </Row>
                               <div slot="footer">
-                                  <Button type="text" @click="handleCancel">取消</Button>
-                                  <Button type="ghost" @click="handleReset('formData')" style="margin-left: 8px">重置</Button>
-                                  <Button type="primary" @click="handleSubmit('formData')">提交</Button>
+                                  <Button type="text" @click="cancelAdd">Cancel</Button>
+                                  <Button type="ghost"  @click="handleReset('gameForm')" style="margin-left: 8px">Reset</Button>
+                                  <Button type="primary" :loading="loadResult" @click="addNew">Submit</Button>
                               </div>
                           </Modal>
                           <!-- 模态框添加窗口 -->
@@ -91,34 +106,17 @@ export default {
   data() {
     return {
       popModal: false,
-      loadResult: true,
-      formData: {
-                    name: '',
-                    mail: '',
-                    city: '',
-                    gender: '',
-                    interest: [],
+      loadResult: false,
+      formItem: {
+                    input: '',
+                    select: '',
+                    radio: 'male',
+                    checkbox: [],
+                    switch: true,
                     date: '',
                     time: '',
-                    desc: ''
-                },
-      ruleValidate: {
-                    name: [
-                        { required: true, message: 'The name cannot be empty', trigger: 'blur' }
-                    ],
-                    realname: [
-                        { required: true, message: 'The realname cannot be empty', trigger: 'blur' }
-                    ],
-                    mail: [
-                        { required: true, message: 'Mailbox cannot be empty', trigger: 'blur' },
-                        { type: 'email', message: 'Incorrect email format', trigger: 'blur' }
-                    ],
-                    city: [
-                        { required: true, message: 'Please select the city', trigger: 'change' }
-                    ],
-                    mobile: [
-                        { required: true, message: 'The mobile cannot be empty', trigger: 'blur' }
-                    ]
+                    slider: [0, 50],
+                    textarea: ''
                 },
       searchCon: "",
       initTable: [],
@@ -137,16 +135,15 @@ export default {
       ],
       tableColumns: [
         {
-          title: "用户名",
-          key: "name",
-          sortable: true,
+          title: "游戏名称",
+          key: "name"
         },
         {
-          title: "真实姓名",
+          title: "游戏主页",
           key: "site"
         },
         {
-          title: "电子邮件",
+          title: "游戏接口",
           key: "api_url"
         },
         {
@@ -155,8 +152,8 @@ export default {
           sortable: true,
           render: (h, params) => {
             const row = params.row;
-            const color = row.status === 2 ? "blue" : row.status === 1 ? "green" : "red";
-            const text =  row.status === 2 ? "已激活" : row.status === 1 ? "封禁中" : "未激活";
+            const color = row.status === 1 ? "blue" : row.status === 2 ? "green" : "red";
+            const text =  row.status === 1 ? "测试" : row.status === 2 ? "上线" : "下线";
             return h(
               "Tag",
               {
@@ -170,9 +167,8 @@ export default {
           }
         },
         {
-          title: "用户权限",
+          title: "描述",
           key: "portrayal",
-          sortable: true,
           render: (h, params) => {
             return h(
               "Poptip",
@@ -213,7 +209,7 @@ export default {
           }
         },
         {
-          title: "所属联运商",
+          title: "在线玩家",
           key: "people",
           render: (h, params) => {
             return h(
@@ -255,11 +251,17 @@ export default {
           }
         },
         {
-          title: "创建时间",
-          key: "add_time",
-          sortable: true,
+          title: "运行时间",
+          key: "time",
           render: (h, params) => {
-            return h("div",util.formatDate(this.tableData[params.index].add_time)
+            return h("div", "大约 " + params.row.time + " 天");
+          }
+        },
+        {
+          title: "开服时间",
+          key: "update",
+          render: (h, params) => {
+            return h("div",util.formatDate(this.tableData[params.index].update)
             );
           }
         },
@@ -335,7 +337,7 @@ export default {
     // 分页数据(ajax异步获取，一次性获取完毕)
     mockTableData(params) {
       let ajaxData = [];
-      util.ajaxPost("", params)
+      util.ajaxPost("menu", params)
         .then(
           function(response) {
             // 遍历结果数据
@@ -348,7 +350,8 @@ export default {
                   status: Math.floor(Math.random() * 3 + 1),
                   portrayal: ["City", "People", "Cost", "Life", "Entertainment"],
                   people: [{}],
-                  add_time: new Date()
+                  time: Math.floor(Math.random() * 7 + 1),
+                  update: new Date()
                 });
               });
             }
@@ -414,38 +417,29 @@ export default {
     },
     addNew () {
         // console.log(this.$refs);
+        this.loadResult = true;
         let formItem = this.formItem;
         console.log(this.formItem);
         // 执行异步
           setTimeout(() => {
-              this.popModal = false;
+            this.popModal = false;
               this.$Message.success('添加成功');
           }, 2000);
     },
-    handleCancel () {
-          this.popModal = false;
-          this.$Message.error('取消成功');
+    cancelAdd () {
+      this.loadResult = false;
+      this.popModal = false;
+      this.$Message.error('取消成功');
     },
     handleReset (formName) {
+      this.loadResult = false;
       console.log(this.$refs[formName]);
       this.$refs[formName].resetFields();
       this.$Message.error('重置成功');
     },
-    handleSubmit (formName) {
-      console.log(formName);
-        this.$refs[formName].validate((valid) => {
-            let formItem = this.form.name;
-            console.log(formItem);
-            if (valid) {
-                this.$Message.success('验证成功');
-            } else {
-                this.$Message.error('数据输入异常，请检查！');
-            }
-        })
-    },
   },
   mounted() {
-    
+
     let params = {
       cmdId: "getGameList", //获取游戏列表操作
       gameId: localStorage.gameId

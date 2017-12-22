@@ -14,7 +14,7 @@ util.title = function (title) {
 
 const ajaxUrl = env === 'development'
     ? localStorage.gameApi ? localStorage.gameApi : 'http://127.0.0.1/'
-: env === 'production'
+    : env === 'production'
         ? localStorage.gameApi
         : localStorage.gameApi;
 
@@ -31,6 +31,14 @@ util.ajaxPost = function (url, params) {
     // 设置在实例的请求头为 application/x-www-form-urlencoded，默认是json
     util.ajax.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
     return util.ajax.post(url, params);
+};
+
+util.convertArrToObj = function (arr) {
+    let rv = {};
+    for (let i = 0; i < arr.length; ++i) {
+        rv[i] = arr[i];
+    }
+    return rv;
 };
 
 util.inOf = function (arr, targetArr) {

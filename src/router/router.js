@@ -239,25 +239,18 @@ export const appRouter = [
         component: Main,
         children: [
             {
-                path: 'games',
-                icon: 'ios-game-controller-b',
-                name: 'games',
-                title: '游戏管理',
-                component: resolve => { require(['@/views/system/game.vue'], resolve); }
-            },
-            {
-                path: 'systemOperator',
+                path: 'groups',
                 icon: 'compass',
-                name: 'operator',
+                name: 'groups',
                 title: '部门管理',
-                component: resolve => { require(['@/views/system/operator.vue'], resolve); }
+                component: resolve => { require(['@/views/system/group.vue'], resolve); }
             },
             {
-                path: 'admin',
+                path: 'users',
                 icon: 'person-add',
-                name: 'admin',
+                name: 'users',
                 title: '用户管理',
-                component: resolve => { require(['@/views/system/admin.vue'], resolve); }
+                component: resolve => { require(['@/views/system/user.vue'], resolve); }
             },
             {
                 path: 'permission',
@@ -265,166 +258,173 @@ export const appRouter = [
                 name: 'permission',
                 title: '权限管理',
                 component: resolve => { require(['@/views/system/permission.vue'], resolve); }
+            },
+            {
+                path: 'menus',
+                icon: 'ios-game-controller-b',
+                name: 'menus',
+                title: '菜单管理',
+                component: resolve => { require(['@/views/system/menu.vue'], resolve); }
             }
         ]
     },
-    {
-        path: '/maintenance',
-        icon: 'wrench',
-        name: 'maintenance',
-        title: '运维管理',
-        component: Main,
-        children: [
-            {
-                path: 'gameParams',
-                icon: 'document',
-                name: 'gameParams',
-                title: '游戏参数模板',
-                component: resolve => { require(['@/views/maintenance/game-params.vue'], resolve); }
-            },
-            {
-                path: 'channelList',
-                icon: 'android-list',
-                name: 'channelList',
-                title: '联运商列表',
-                component: resolve => { require(['@/views/maintenance/channel-list.vue'], resolve); }
-            },
-            {
-                path: 'serverList',
-                icon: 'android-list',
-                name: 'serverList',
-                title: '服务器列表',
-                component: resolve => { require(['@/views/maintenance/server-list.vue'], resolve); }
-            },
-            {
-                path: 'ipList',
-                icon: 'android-list',
-                name: 'ipList',
-                title: 'IP过滤列表管理',
-                component: resolve => { require(['@/views/maintenance/ip-list.vue'], resolve); }
-            },
-            {
-                path: 'cdbList',
-                icon: 'android-list',
-                name: 'cdbList',
-                title: 'CDB数据库管理',
-                component: resolve => { require(['@/views/maintenance/cdb-list.vue'], resolve); }
-            },
-            {
-                path: 'clearTools',
-                icon: 'ios-barcode-outline',
-                name: 'clearTools',
-                title: '清档工具',
-                component: resolve => { require(['@/views/maintenance/clear-tools.vue'], resolve); }
-            },
-            {
-                path: 'mergerTools',
-                icon: 'android-list',
-                name: 'mergerTools',
-                title: '合服工具',
-                component: resolve => { require(['@/views/maintenance/merger-tools.vue'], resolve); }
-            },
-            {
-                path: 'batchTools',
-                icon: 'ios-color-wand',
-                name: 'batchTools',
-                title: '批量工具',
-                component: resolve => { require(['@/views/maintenance/batch-tools.vue'], resolve); }
-            }
-        ]
-    },
-    {
-        path: '/business',
-        icon: 'ios-pie-outline',
-        name: 'business',
-        title: '运营管理',
-        component: Main,
-        children: [
-            {
-                path: 'accountList',
-                icon: 'ios-people',
-                name: 'accountList',
-                title: '广告导入',
-                component: resolve => { require(['@/views/account/account-list.vue'], resolve); }
-            },
-            {
-                path: 'bonusList',
-                icon: 'social-freebsd-devil',
-                name: 'bonusList',
-                title: '游戏礼包',
-                component: resolve => { require(['@/views/account/bonus-list.vue'], resolve); }
-            }
-        ]
-    },
-    {
-        path: '/account',
-        icon: 'android-contacts',
-        name: 'account',
-        title: '玩家管理',
-        component: Main,
-        children: [
-            {
-                path: 'accountList',
-                icon: 'ios-people',
-                name: 'accountList',
-                title: '普通玩家管理',
-                component: resolve => { require(['@/views/account/account-list.vue'], resolve); }
-            },
-            {
-                path: 'bonusList',
-                icon: 'social-freebsd-devil',
-                name: 'bonusList',
-                title: '福利号管理',
-                component: resolve => { require(['@/views/account/bonus-list.vue'], resolve); }
-            }
-        ]
-    },
-    {
-        path: '/activity',
-        icon: 'social-bitcoin-outline',
-        name: 'activity',
-        title: '活动管理',
-        component: Main,
-        children: [
-            {
-                path: 'activityList',
-                icon: 'social-buffer-outline',
-                name: 'activityList',
-                title: '活动列表',
-                component: resolve => { require(['@/views/activity/activity-list.vue'], resolve); }
-            },
-            {
-                path: 'activityPublish',
-                icon: 'social-freebsd-devil',
-                name: 'activityPublish',
-                title: '活动发布',
-                component: resolve => { require(['@/views/activity/activity-publish.vue'], resolve); }
-            }
-        ]
-    },
-    {
-        path: '/notifications',
-        icon: 'android-notifications-none',
-        name: 'notifications',
-        title: '公告管理',
-        component: Main,
-        children: [
-            {
-                path: 'systemNoticeList',
-                icon: 'android-chat',
-                name: 'systemNoticeList',
-                title: '系统公告',
-                component: resolve => { require(['@/views/notifications/system-notice-list.vue'], resolve); }
-            },
-            {
-                path: 'serverNoticeList',
-                icon: 'android-sad',
-                name: 'serverNoticeList',
-                title: '维护公告',
-                component: resolve => { require(['@/views/notifications/server-notice-list.vue'], resolve); }
-            }
-        ]
-    },
+    // {
+    //     path: '/maintenance',
+    //     icon: 'wrench',
+    //     name: 'maintenance',
+    //     title: '运维管理',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'gameParams',
+    //             icon: 'document',
+    //             name: 'gameParams',
+    //             title: '游戏参数模板',
+    //             component: resolve => { require(['@/views/maintenance/game-params.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'channelList',
+    //             icon: 'android-list',
+    //             name: 'channelList',
+    //             title: '联运商列表',
+    //             component: resolve => { require(['@/views/maintenance/channel-list.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'serverList',
+    //             icon: 'android-list',
+    //             name: 'serverList',
+    //             title: '服务器列表',
+    //             component: resolve => { require(['@/views/maintenance/server-list.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'ipList',
+    //             icon: 'android-list',
+    //             name: 'ipList',
+    //             title: 'IP过滤列表管理',
+    //             component: resolve => { require(['@/views/maintenance/ip-list.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'cdbList',
+    //             icon: 'android-list',
+    //             name: 'cdbList',
+    //             title: 'CDB数据库管理',
+    //             component: resolve => { require(['@/views/maintenance/cdb-list.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'clearTools',
+    //             icon: 'ios-barcode-outline',
+    //             name: 'clearTools',
+    //             title: '清档工具',
+    //             component: resolve => { require(['@/views/maintenance/clear-tools.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'mergerTools',
+    //             icon: 'android-list',
+    //             name: 'mergerTools',
+    //             title: '合服工具',
+    //             component: resolve => { require(['@/views/maintenance/merger-tools.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'batchTools',
+    //             icon: 'ios-color-wand',
+    //             name: 'batchTools',
+    //             title: '批量工具',
+    //             component: resolve => { require(['@/views/maintenance/batch-tools.vue'], resolve); }
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/business',
+    //     icon: 'ios-pie-outline',
+    //     name: 'business',
+    //     title: '运营管理',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'accountList',
+    //             icon: 'ios-people',
+    //             name: 'accountList',
+    //             title: '广告导入',
+    //             component: resolve => { require(['@/views/account/account-list.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'bonusList',
+    //             icon: 'social-freebsd-devil',
+    //             name: 'bonusList',
+    //             title: '游戏礼包',
+    //             component: resolve => { require(['@/views/account/bonus-list.vue'], resolve); }
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/account',
+    //     icon: 'android-contacts',
+    //     name: 'account',
+    //     title: '玩家管理',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'accountList',
+    //             icon: 'ios-people',
+    //             name: 'accountList',
+    //             title: '普通玩家管理',
+    //             component: resolve => { require(['@/views/account/account-list.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'bonusList',
+    //             icon: 'social-freebsd-devil',
+    //             name: 'bonusList',
+    //             title: '福利号管理',
+    //             component: resolve => { require(['@/views/account/bonus-list.vue'], resolve); }
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/activity',
+    //     icon: 'social-bitcoin-outline',
+    //     name: 'activity',
+    //     title: '活动管理',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'activityList',
+    //             icon: 'social-buffer-outline',
+    //             name: 'activityList',
+    //             title: '活动列表',
+    //             component: resolve => { require(['@/views/activity/activity-list.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'activityPublish',
+    //             icon: 'social-freebsd-devil',
+    //             name: 'activityPublish',
+    //             title: '活动发布',
+    //             component: resolve => { require(['@/views/activity/activity-publish.vue'], resolve); }
+    //         }
+    //     ]
+    // },
+    // {
+    //     path: '/notifications',
+    //     icon: 'android-notifications-none',
+    //     name: 'notifications',
+    //     title: '公告管理',
+    //     component: Main,
+    //     children: [
+    //         {
+    //             path: 'systemNoticeList',
+    //             icon: 'android-chat',
+    //             name: 'systemNoticeList',
+    //             title: '系统公告',
+    //             component: resolve => { require(['@/views/notifications/system-notice-list.vue'], resolve); }
+    //         },
+    //         {
+    //             path: 'serverNoticeList',
+    //             icon: 'android-sad',
+    //             name: 'serverNoticeList',
+    //             title: '维护公告',
+    //             component: resolve => { require(['@/views/notifications/server-notice-list.vue'], resolve); }
+    //         }
+    //     ]
+    // },
     // {
     //     path: '/account',
     //     icon: 'person',
